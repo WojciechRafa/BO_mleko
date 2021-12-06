@@ -1,5 +1,6 @@
 from typing import Tuple
 
+import data
 import struct
 
 def check_r_time(max_d, SR_):
@@ -31,5 +32,25 @@ def check_distance(lk_, cp_, R_) -> Tuple[float, bool]:  # zwrca koszt przejecha
     return p_km, is_day_dist_ok
 
 
-def check_milk_quantity():
-    return None
+
+def check_milk_quantity(solution: List):
+    numbers_of_errors = 0
+    for day in solution:
+        milk_quantity = 0
+        for node_and_milk in day:
+            node, milk = node_and_milk
+            if node.name == 'r':
+                milk_quantity += milk
+            elif node.name == 'm':
+                milk_quantity -= milk
+            elif node.name == 'b':
+                    milk_quantity += milk
+            else:
+                raise RuntimeError("Nieprawidłowy typ nod-a")
+
+            if milk_quantity > data.mc:
+                numbers_of_errors += 1
+    if numbers_of_errors > 0:
+        return numbers_of_errors, False
+    else:
+        return numbers_of_errors, True
