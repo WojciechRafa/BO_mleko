@@ -4,24 +4,23 @@ import struct
 from typing import List
 from typing import Tuple
 
-import features
+
+def profits_calc(solution: List):
+    profits_sum = 0
+    for day in solution:
+        for node_and_milk in day:
+            node, milk = node_and_milk
+            profits_sum += milk * node.data[3]
+    return profits_sum
 
 
-def profit_on_node(node_and_milk: Tuple[struct.Node, int]):
-    node, milk = node_and_milk
-    if node.name == 'm':
-        return milk * node.data[3]
-    else:
-        return 0
-
-
-def drive_cost(solution: List, n_matrix: struct.Neigbour_matrix):
+def drive_cost(solution: List):
     sum = 0
     for day in solution:
         day_copy = day[:]
         day_copy.append((data.b, 0))
         for i in range(len(day_copy) - 1):
-            sum += n_matrix.get_lenght(day_copy[i][0], day_copy[i + 1][0])
+            sum += data.G.get_lenght(day_copy[i][0], day_copy[i + 1][0])
     return sum
 
 
@@ -41,13 +40,11 @@ def cooling_cost(solution: List):
             else:
                 raise RuntimeError("Nieprawidłowy typ nod-a")
 
-            if cooled_milk < 0:
-                raise RuntimeError("Mleko nie może być ujemne !")
         sum += cooled_milk * data.cs
     return sum
 
 
 def t_fun(solution):
-    profit = features.sum_by_day(solution, profit_on_node)
+    profit = profits_calc(solution)
     d_cost = drive_cost(solution, data.G)
     cool_cost = cooling_cost(solution)

@@ -14,10 +14,10 @@ k = 0  # kary umowne
 p = 0  # koszt paliwa
 
 SR = [
-    # [produkcja dzienna, aktualna liczba mleka, jak dawno mleko nie było odbierane, cena skupu]
-    [50, 100, 2, 1.2],
-    [100, 200, 4, 1.3],
-    [20, 30, 1, 1.2]
+    # [produkcja dzienna 0 , aktualna liczba mleka 1 , jak dawno mleko nie było odbierane 2 ]
+    [50, 100, 2],
+    [100, 200, 4],
+    [20, 30, 1]
 ]
 
 
