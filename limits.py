@@ -29,3 +29,7 @@ def check_distance(lk_, cp_, R_) -> Tuple[float, bool]:  # zwrca koszt przejecha
                 p_km = p_km + distance * cp_
 
     return p_km, is_day_dist_ok
+
+
+def check_milk_quantity():
+    return None
