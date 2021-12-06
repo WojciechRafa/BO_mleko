@@ -1,3 +1,6 @@
+from typing import Tuple
+
+
 def check_r_time(max_d, SR_):
     k = 0
     for rolnik in SR_.keys():
@@ -6,8 +9,7 @@ def check_r_time(max_d, SR_):
     return k
 
 
-def check_distance(lk_, cp_, R_) -> Tuple[
-    float, bool]:  # zwrca koszt przejechania dystansu oraz czy któregoś dnioa przekroczono ograniczenie
+def check_distance(lk_, cp_, R_) -> Tuple[float, bool]:  # zwrca koszt przejechania dystansu oraz czy któregoś dnioa przekroczono ograniczenie
     p_km: float = 0
     is_day_dist_ok: bool = True
     for dzien in R_:

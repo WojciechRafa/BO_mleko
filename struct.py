@@ -2,10 +2,12 @@ import numpy as np
 from typing import List
 from typing import Tuple
 
+
 class Node:
     def __init__(self, name_, nr_=-1):
         self.name: str  # b - baza, r - farma, m - mleczarnia
         self.nr: int  # numeracja od 1
+        self.data: List = []
 
         if name_ != "b" and name_ != "r" and name_ != "m":
             raise Exception("niewlasciwa nazwa węzła")
@@ -38,7 +40,7 @@ class Neigbour_matrix:
         for node in node_list_:
             self.node_list.append(node)
 
-    def get_node_idx(self, node) -> int:
+    def get_node_idx(self, node: Node) -> int:
         for i in range(len(self.node_list)):
             if self.node_list[i] == node:
                 return i
@@ -49,6 +51,9 @@ class Neigbour_matrix:
         if (not shape[0] is shape[1]) or (not shape[0] is len(self.node_list)):
             raise Exception("Niewłaściwy rozmiar macierzy")
         self.neighbour_array = conn_array
+
+    def get_lenght(self, node_1: Node, node_2: Node):
+        return self.neighbour_array[self.get_node_idx(node_1), self.get_node_idx(node_2)]
 
     def print_nodes(self):
         for node in self.node_list:
