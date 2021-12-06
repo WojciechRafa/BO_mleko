@@ -9,9 +9,10 @@ cs = 0.2  # cena schłodzenia jednego litra mleka
 mc = 0  # liczba litrów w cysternie
 max_d = 3  # maksymalna liczba dni przez któe mleko może być u rolnika
 
-# zmienne do obliczania zysku
-k = 0  # kary umowne
-p = 0  # koszt paliwa
+old_milk_error_cost = 2000
+dist_error_cost = 2000
+volume_error_cost = 2000
+
 
 SR = [
     # [produkcja dzienna 0 , aktualna liczba mleka 1 , jak dawno mleko nie było odbierane 2 ]
