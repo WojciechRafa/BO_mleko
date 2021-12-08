@@ -65,3 +65,20 @@ def mlecz_penalties(solution: List) -> int:
         if dairy[5] < dairy[1] or dairy[5] > dairy[2]:
             sum_penalty += dairy[4]
     return sum_penalty
+
+
+def check_schedule(solution: List) -> Tuple[int, bool]:
+    numbers_of_errors: int = 0
+    is_shedule_ok: bool = True
+    d: int = 0
+    for day in solution:
+        d += 1
+        milk_quantity = 0
+        for node_milk in day:
+            node, milk = node_milk
+            if node.nama =='m':
+                if not d in node.data[0]:
+                    numbers_of_errors += 1
+    if numbers_of_errors > 0:
+        is_shedule_ok = False
+    return numbers_of_errors, is_shedule_ok
