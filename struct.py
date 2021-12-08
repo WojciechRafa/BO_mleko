@@ -1,4 +1,3 @@
-import numpy as np
 from typing import List
 from typing import Tuple
 
@@ -33,7 +32,7 @@ class Node:
 class Neigbour_matrix:
     def __init__(self):
         self.node_list: List[Node] = [Node('b')]
-        self.neighbour_array = np.array([])
+        self.neighbour_matrix = []
 
     def set_node_list(self, node_list_):
         #sorted(node_list_, key=lambda node: node.name)
@@ -46,14 +45,14 @@ class Neigbour_matrix:
                 return i
         raise Exception("Nie ma takiego węzła")
 
-    def set_connection(self, conn_array: np.array):
-        shape = conn_array.shape
+    def set_connection(self, conn_matrix: List):
+        shape = (len(conn_matrix), len(conn_matrix))
         if (not shape[0] is shape[1]) or (not shape[0] is len(self.node_list)):
             raise Exception("Niewłaściwy rozmiar macierzy")
-        self.neighbour_array = conn_array
+        self.neighbour_matrix = conn_matrix
 
     def get_lenght(self, node_1: Node, node_2: Node):
-        return self.neighbour_array[self.get_node_idx(node_1), self.get_node_idx(node_2)]
+        return self.neighbour_matrix[self.get_node_idx(node_1)][self.get_node_idx(node_2)]
 
     def print_nodes(self):
         for node in self.node_list:

@@ -1,5 +1,5 @@
 import struct
-import numpy as np
+
 
 # Główne dane:
 lk = 20  # limit kilonmetrów
@@ -47,12 +47,12 @@ b = struct.Node("b")
 node_list = r + m + [b]
 
 # macierz połączeń - dla uprosczenia założon, że z każdego punktu można pojechać do każdego innego
-connection = np.array([[0, 2, 3, 4, 5, 6],
-                       [2, 0, 3, 4, 5, 6],
-                       [3, 3, 0, 4, 5, 6],
-                       [4, 4, 4, 0, 5, 6],
-                       [5, 5, 5, 5, 0, 6],
-                       [6, 6, 6, 6, 6, 0]])
+connection = [[0, 2, 3, 4, 5, 6],
+              [2, 0, 3, 4, 5, 6],
+              [3, 3, 0, 4, 5, 6],
+              [4, 4, 4, 0, 5, 6],
+              [5, 5, 5, 5, 0, 6],
+              [6, 6, 6, 6, 6, 0]]
 
 G = struct.Neigbour_matrix()
 G.set_node_list(node_list)
