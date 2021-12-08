@@ -1,6 +1,8 @@
 import struct
 
 
+print("AAA")
+
 # Główne dane:
 lk = 20  # limit kilonmetrów
 pc = 200  # pojemność cysterny
@@ -37,14 +39,15 @@ SM = [
 
 m = []
 m_size = 2
-for i in range(r_size):
+for i in range(m_size):
     m.append(struct.Node("m", i))
     m[i].data = SM[i]
 
 
 b = struct.Node("b")
 
-node_list = r + m + [b]
+node_list = [b] + r + m
+
 
 # macierz połączeń - dla uprosczenia założon, że z każdego punktu można pojechać do każdego innego
 connection = [[0, 2, 3, 4, 5, 6],

@@ -31,13 +31,14 @@ class Node:
 
 class Neigbour_matrix:
     def __init__(self):
-        self.node_list: List[Node] = [Node('b')]
+        self.node_list = []
         self.neighbour_matrix = []
 
     def set_node_list(self, node_list_):
         #sorted(node_list_, key=lambda node: node.name)
         for node in node_list_:
             self.node_list.append(node)
+
 
     def get_node_idx(self, node: Node) -> int:
         for i in range(len(self.node_list)):
@@ -46,8 +47,8 @@ class Neigbour_matrix:
         raise Exception("Nie ma takiego węzła")
 
     def set_connection(self, conn_matrix: List):
-        shape = (len(conn_matrix), len(conn_matrix))
-        if (not shape[0] is shape[1]) or (not shape[0] is len(self.node_list)):
+        shape = (len(conn_matrix), len(conn_matrix[0]))
+        if (not shape[0] == shape[1]) or (not shape[0] == len(self.node_list)):
             raise Exception("Niewłaściwy rozmiar macierzy")
         self.neighbour_matrix = conn_matrix
 
