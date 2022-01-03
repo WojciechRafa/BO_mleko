@@ -39,7 +39,6 @@ class Neigbour_matrix:
         for node in node_list_:
             self.node_list.append(node)
 
-
     def get_node_idx(self, node: Node) -> int:
         for i in range(len(self.node_list)):
             if self.node_list[i] == node:

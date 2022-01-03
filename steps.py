@@ -4,6 +4,7 @@ from typing import List
 from typing import Tuple
 
 import data
+import features
 
 class Step_type(IntEnum):
     add_R = auto()
@@ -31,7 +32,7 @@ def __make_step(move_type: Step_type, day: List[Tuple])-> Tuple[bool, List]:    
     is_step_correct = True
 
     # dodanie nowego elemntu
-    if move_type == Step_type.add_R :
+    if move_type == Step_type.add_R:
         pos = random.randrange(len(day)) + 1
         r_nr = random.randrange(len(data.r))
         return True, [pos, data.r[r_nr]]
@@ -49,7 +50,7 @@ def __make_step(move_type: Step_type, day: List[Tuple])-> Tuple[bool, List]:    
     elif move_type == Step_type.remove_R:
         list_pos = []
         for i in range(len(day)):
-            if day[i] in data.r:
+            if day[i][0] in data.r:
                 list_pos.append(i)
 
         if len(list_pos) == 0:
@@ -59,7 +60,7 @@ def __make_step(move_type: Step_type, day: List[Tuple])-> Tuple[bool, List]:    
     elif move_type == Step_type.remove_M:
         list_pos = []
         for i in range(len(day)):
-            if day[i] in data.r:
+            if day[i][0] in data.r:
                 list_pos.append(i)
 
         if len(list_pos) == 0:
@@ -69,7 +70,7 @@ def __make_step(move_type: Step_type, day: List[Tuple])-> Tuple[bool, List]:    
     elif move_type == Step_type.remove_B:
         list_pos = []
         for i in range(len(day)):
-            if day[i] in data.r:
+            if day[i][0] in data.r:
                 list_pos.append(i)
 
         if len(list_pos) == 0:
@@ -78,7 +79,19 @@ def __make_step(move_type: Step_type, day: List[Tuple])-> Tuple[bool, List]:    
             return True, [list_pos[random.randrange(len(list_pos))]]
 
     elif move_type == Step_type.increase_R:
-        pass
+        r_list = []
+        for i in range(len(day)):
+            if [0][i] in data.r:
+                r_list.append(i)
+
+        if len(r_list) == 0:
+            return False, []
+        else:
+            chosed_node = r_list[random.randrange(len(r_list))]
+            milk_on_car = features.sum_milk(day[:chosed_node])
+            max_added_milk = max(data.pc - milk_on_car, day[i][1])
+            return True, []
+
     elif move_type == Step_type.decrease_R:
         pass
     elif move_type == Step_type.take_max_R:
@@ -96,11 +109,11 @@ def __make_step(move_type: Step_type, day: List[Tuple])-> Tuple[bool, List]:    
     elif move_type == Step_type.decrease_B:
         pass
 
+
 class Step:
     def __init__(self, type_, day_: int):
         self.type = type_
         self.dat: int = day_
-
 
     def get_random_steps(self, R: List[Tuple], n: int) -> List:
         #imposible_move_list = []   # lista ta ma na celu ochronę przed wykonywaniem niemożliwych ruchów, posada ona w
@@ -113,8 +126,3 @@ class Step:
             # tymczasowo
             move_type: Step_type = Step_type(random.randrange(int(Step_type.add_B)+1))
             day_nr: int = random.randrange(5)
-
-
-
-
-

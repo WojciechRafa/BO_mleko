@@ -1,7 +1,7 @@
 from typing import Tuple
 from typing import List
 
-import struct
+import d_struct
 import data
 
 
@@ -24,7 +24,7 @@ def check_distance(solution: List) -> Tuple[int, bool]:  # zwrca koszt przejecha
         lista_krokow = []
         for krok in dzien:
             lista_krokow.append(krok[0])
-        lista_krokow.append(struct.b)
+        lista_krokow.append(d_struct.b)
         for i in range(len(lista_krokow) - 1):
             distance += data.G.get_lenght(lista_krokow[i], lista_krokow[i+1])
         if distance > data.lk:

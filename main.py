@@ -2,7 +2,7 @@ from typing import List
 from typing import Tuple
 
 import data
-import struct
+import d_struct
 import steps
 
 

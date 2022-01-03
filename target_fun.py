@@ -1,5 +1,5 @@
 import data
-import struct
+import d_struct
 import limits
 
 from typing import List
