@@ -65,3 +65,38 @@ start_solution = [
     [(b, 0), (r[0], 30), (r[1], 50), (r[2], 100), (m[0], 180)],
     [(b, 0), (r[0], 30), (r[2], 50), (m[0], 50), (r[2], 60)],
     [(b, 0), (r[1], 100), (r[0], 100), (m[1], 160), (m[0], 40)]]
+
+
+# funkcje
+
+def how_many_milk_is_in_point(day_nr: int, nr_in_day: int):   # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
+    node = G.neighbour_matrix[day_nr][nr_in_day]
+
+    if node[0].name == 'b':
+        milk_in_base = 0
+        for day in G.node_list[:day_nr]:
+            milk_on_car = 0
+            for node in day:
+                if node[0].name == 'b':
+                    milk_in_base -= node[1] # minus ponieważ liczba w node mówi o tym ile  mleka trafiło do ciężarówki
+                elif node[0].name == 'm':
+                    milk_on_car -= node[1]
+                elif node[0].name == 'r':
+                    milk_in_base += node[1]
+            milk_in_base += milk_on_car
+
+        milk_on_car = 0
+        for node in G.node_list[day_nr][:nr_in_day]:
+            if node[0].name == 'b':
+                milk_in_base -= node[1]  # minus ponieważ liczba w node mówi o tym ile  mleka trafiło do ciężarówki
+            elif node[0].name == 'm':
+                milk_on_car -= node[1]
+            elif node[0].name == 'r':
+                milk_in_base += node[1]
+        milk_in_base += milk_on_car
+
+
+    elif node[0].name == 'm':
+        pass
+    elif node[0].name == 'r':
+        pass

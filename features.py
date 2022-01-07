@@ -19,3 +19,4 @@ def sum_milk(nodes: List):
             milk -= node[1]
         else:
             milk += node[1] # założono, że w przypadku bazy plusem oznaczony jest załadunke na pojazd
+    return milk
