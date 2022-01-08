@@ -99,7 +99,7 @@ class Step:
                 milk_on_car = features.sum_milk(day[:chosed_node])
 
                 car_limit: int = data.pc - milk_on_car
-                farmer_limit: int = data.how_many_milk_is_in_point(day_idx, chosed_node) - day[chosed_node][1]
+                farmer_limit: int = data.how_many_milk_is_in_point(self.day, chosed_node) - day[chosed_node][1]
 
                 max_added_milk = 0
                 if car_limit > 0 and farmer_limit > 0:
