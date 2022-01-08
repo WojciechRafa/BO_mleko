@@ -1,5 +1,6 @@
 import d_struct
-
+from typing import List
+from typing import Tuple
 
 # Główne dane:
 lk = 20  # limit kilonmetrów
@@ -69,8 +70,8 @@ start_solution = [
 
 # funkcje
 
-def how_many_milk_is_in_point(day_nr: int, nr_in_day: int):   # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
-    checked_node = G.neighbour_matrix[day_nr][nr_in_day]
+def how_many_milk_is_in_point(timetable: List[List[Tuple]], day_nr: int, nr_in_day: int):   # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
+    checked_node = timetable[day_nr][nr_in_day]
 
     if checked_node[0].name == 'b':
         milk_in_base = 0
@@ -100,18 +101,19 @@ def how_many_milk_is_in_point(day_nr: int, nr_in_day: int):   # ilość mleka na
         milk_in_dairy = 0
         for day in G.node_list[:day_nr]:
             for node in day:
-                if node == checked_node:
+                if node == checked_node[0]:
                     milk_in_dairy += node[0]
         for node in G.node_list[day_nr][:nr_in_day]:
             if node == checked_node:
                 milk_in_dairy += node[0]
-
+        return milk_in_dairy
     elif checked_node[0].name == 'r':
-        milk_at_farmer = checked_node.data[0] * day_nr
-        for day in G.node_list[:day_nr]:
+        milk_at_farmer = checked_node[0].data[0] * day_nr
+        for day in timetable[:day_nr]:
             for node in day:
-                if node == checked_node:
-                    milk_at_farmer -= node[0]
-        for node in G.node_list[day_nr][:nr_in_day]:
-            if node == checked_node:
-                milk_at_farmer -= node[0]
+                if node[0] == checked_node[0]:
+                    milk_at_farmer -= node[1]
+        for node in timetable[day_nr][:nr_in_day]:
+            if node[0] == checked_node[0]:
+                milk_at_farmer -= node[1]
+        return milk_at_farmer
