@@ -115,10 +115,47 @@ class Step:
                 to_return = True, [chosed_node, random.randrange(max_added_milk)]
 
         elif self.type == Step_type.decrease_R:
-            to_return = False, []  # TODO
+            r_list: List[int] = []
+            for i in range(len(day)):
+                if day[i][0] in data.r:
+                    r_list.append(i)
 
-        elif self.type == Step_type.take_max_R:
-            to_return = False, []  # TODO
+            if len(r_list) == 0:
+                to_return = False, []
+            else:
+                chosed_node: int = r_list[random.randrange(len(r_list))]
+                max_decrease = timetable[self.day][chosed_node][1]
+                to_return = True, [chosed_node, random.randrange(max_decrease)]
+
+        elif self.type == Step_type.take_max_R:# w data podawana jest maksymalna wartość jaka może być doładowana
+            r_list: List[int] = []
+            for i in range(len(day)):
+                if day[i][0] in data.r:
+                    r_list.append(i)
+
+            if len(r_list) == 0:
+                to_return = False, []
+            else:
+                chosed_node: int = r_list[random.randrange(len(r_list))]
+                milk_on_car = features.sum_milk(day[:chosed_node])
+
+                car_limit: int = data.pc - milk_on_car
+                farmer_limit: int = data.how_many_milk_is_in_point(timetable, self.day, chosed_node) - day[chosed_node][1]
+
+                max_added_milk = 0
+                is_in_limits = True
+                if car_limit > 0 and farmer_limit > 0:
+                    max_added_milk = max(car_limit, farmer_limit)
+                elif car_limit > 0:
+                    max_added_milk = car_limit
+                elif farmer_limit > 0:
+                    max_added_milk = farmer_limit
+                else:
+                    is_in_limits = False
+                if is_in_limits:
+                    to_return = True, [chosed_node, max_added_milk]
+                else:
+                    to_return = False, []  # jeżeli nie ma możliwości dokonania ruchu
 
         elif self.type == Step_type.increase_M:
             m_list: List[int] = []
@@ -143,11 +180,53 @@ class Step:
                 to_return = True, [chosed_node, random.randrange(max_added_milk)]
 
         elif self.type == Step_type.decrease_M:
-            to_return = False, []  # TODO
+            m_list: List[int] = []
+            for i in range(len(day)):
+                if day[i][0] in data.m:
+                    m_list.append(i)
+
+            if len(m_list) == 0:
+                to_return = False, []
+            else:
+                chosed_node: int = m_list[random.randrange(len(m_list))]
+                max_decrease = timetable[self.day][chosed_node][1]
+                to_return = True, [chosed_node, random.randrange(max_decrease)]
+
         elif self.type == Step_type.take_max_M:
-            to_return = False, []  # TODO
+            m_list: List[int] = []
+            for i in range(len(day)):
+                if day[i][0] in data.m:
+                    m_list.append(i)
+
+            if len(m_list) == 0:
+                to_return = False, []
+            else:
+                chosed_node: int = m_list[random.randrange(len(m_list))]
+                max_milk_to_node = timetable[self.day][chosed_node][0].data[2]
+                milk_in_dairy = data.how_many_milk_is_in_point(timetable, self.day, chosed_node)
+
+                if milk_in_dairy < max_milk_to_node:
+                    to_return = True, [chosed_node, max_milk_to_node - milk_in_dairy]
+                else:
+                    to_return = False, []
+
         elif self.type == Step_type.take_min_M:
-            to_return = False, []  # TODO
+            m_list: List[int] = []
+            for i in range(len(day)):
+                if day[i][0] in data.m:
+                    m_list.append(i)
+
+            if len(m_list) == 0:
+                to_return = False, []
+            else:
+                chosed_node: int = m_list[random.randrange(len(m_list))]
+                min_milk_to_node = timetable[self.day][chosed_node][0].data[1]
+                milk_in_dairy = data.how_many_milk_is_in_point(timetable, self.day, chosed_node)
+
+                if milk_in_dairy < min_milk_to_node:
+                    to_return = True, [chosed_node, milk_in_dairy - min_milk_to_node]
+                else:
+                    to_return = False, []
 
         elif self.type == Step_type.increase_B:
             b_list: List[int] = []
@@ -171,7 +250,25 @@ class Step:
                 to_return = True, [chosed_node, random.randrange(max_added_milk)]
 
         elif self.type == Step_type.decrease_B:
-            to_return = False, []  # TODO
+            b_list: List[int] = []
+            for i in range(len(day)):
+                if day[i][0] == data.b:
+                    b_list.append(i)
+
+            if len(b_list) == 0:
+                to_return = False, []
+            else:
+                chosed_node: int = b_list[random.randrange(len(b_list))]
+                milk_on_car: int = features.sum_milk(day[:chosed_node])
+                added_milk = timetable[self.day][chosed_node][1]
+
+                limit = milk_on_car + added_milk
+
+                max_decrase_milk = 0
+                if limit > 0:
+                    to_return = True, [chosed_node, random.randrange(limit)]
+                else:
+                    to_return = False, []
 
         self.is_posible = to_return[0]
         self.data = to_return[1]
