@@ -31,8 +31,8 @@ for i in range(r_size):
 
 SM = [
     # [(dni odbioru) 0 ,min 1, max 2, cena 3, kara umowan 4, zgroamdzone mleko 5]
-    [(2, 5), 100, 500, 2.5, 1000],
-    [(1, 3, 4), 100, 500, 2, 1000]
+    [(2, 5), 100, 500, 2.5],
+    [(1, 3, 4), 100, 500]
 ]
 
 m = []
@@ -70,9 +70,9 @@ start_solution = [
 # funkcje
 
 def how_many_milk_is_in_point(day_nr: int, nr_in_day: int):   # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
-    node = G.neighbour_matrix[day_nr][nr_in_day]
+    checked_node = G.neighbour_matrix[day_nr][nr_in_day]
 
-    if node[0].name == 'b':
+    if checked_node[0].name == 'b':
         milk_in_base = 0
         for day in G.node_list[:day_nr]:
             milk_on_car = 0
@@ -95,8 +95,23 @@ def how_many_milk_is_in_point(day_nr: int, nr_in_day: int):   # ilość mleka na
                 milk_in_base += node[1]
         milk_in_base += milk_on_car
 
+        return milk_in_base
+    elif checked_node[0].name == 'm':
+        milk_in_dairy = 0
+        for day in G.node_list[:day_nr]:
+            for node in day:
+                if node == checked_node:
+                    milk_in_dairy += node[0]
+        for node in G.node_list[day_nr][:nr_in_day]:
+            if node == checked_node:
+                milk_in_dairy += node[0]
 
-    elif node[0].name == 'm':
-        pass
-    elif node[0].name == 'r':
-        pass
+    elif checked_node[0].name == 'r':
+        milk_at_farmer = checked_node.data[0] * day_nr
+        for day in G.node_list[:day_nr]:
+            for node in day:
+                if node == checked_node:
+                    milk_at_farmer -= node[0]
+        for node in G.node_list[day_nr][:nr_in_day]:
+            if node == checked_node:
+                milk_at_farmer -= node[0]
