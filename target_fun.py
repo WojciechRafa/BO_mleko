@@ -59,7 +59,7 @@ def t_fun(solution) ->Tuple[float, bool]:
     volume_pen, volume_bool = limits.check_milk_volume(solution)
     mlecz_pen = limits.mlecz_penalties(solution)
 
-    pen_sum = old_milk_pen*data.old_milk_error_cost+dist_pen*data.dist_error_cost+volume_pen*data.volume_error_cost+mlecz_pen;
+    pen_sum = old_milk_pen*data.old_milk_error_cost+dist_pen*data.dist_error_cost+volume_pen*data.volume_error_cost+mlecz_pen
     is_legal = old_milk_bool is True and dist_bool is True and volume_bool is True
 
     fun_value = profit - d_cost - cool_cost - pen_sum

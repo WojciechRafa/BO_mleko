@@ -6,6 +6,7 @@ import data
 import d_struct
 import steps
 import target_fun
+import limits
 
 #główne parametry algorytmu
 max_iter = 50 #maksymalna ilość iteracji
@@ -24,21 +25,21 @@ if __name__ == '__main__':
 iter = 0
 
 #pierwszy obieg algorytmu 
-fun_value, is_legal = target_fun.t_fun(R)
+# fun_value, is_legal = target_fun.t_fun(R)
 
 
-while iter < max_iter:
-    #generowanie nowych rozwiązań i wybór najlepszego
-    steps_list = steps.get_random_steps(R, n)
-    for ele in steps_list:
-        new_R = steps.make_step(R,ele)
-        new_fun_value, is_legal = target_fun.t_fun(new_R)
-        if (is_legal == True) and (new_fun_value >= fun_value):
-            R = new_R
-            fun_value = new_fun_value
-    values.append(fun_value) 
+# while iter < max_iter:
+#     #generowanie nowych rozwiązań i wybór najlepszego
+#     steps_list = steps.get_random_steps(R, n)
+#     for ele in steps_list:
+#         new_R = steps.make_step(R,ele)
+#         new_fun_value, is_legal = target_fun.t_fun(new_R)
+#         if (is_legal == True) and (new_fun_value >= fun_value):
+#             R = new_R
+#             fun_value = new_fun_value
+#     values.append(fun_value) 
    
-    #obsługa listy tabu
+#     #obsługa listy tabu
 
 
 #wizualizacja wyników
@@ -46,3 +47,8 @@ while iter < max_iter:
 # plt.xlabel('iteracja')
 # plt.ylabel('wartość')
 # plt.show()
+
+
+# fun_value, is_legal = target_fun.t_fun(R)
+# print(fun_value)
+# print(is_legal)

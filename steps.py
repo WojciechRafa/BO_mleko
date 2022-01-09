@@ -297,3 +297,7 @@ def get_random_steps(timetable: List[List[Tuple]], n: int, max_fail_nr: int = 20
             break
 
     return move_list
+
+
+def make_step(timetable: List[List[Tuple]],step: List):
+    pass
