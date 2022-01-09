@@ -18,7 +18,7 @@ def profits_calc(solution: List) -> int:
         profits_sum += milk_sum * data.SM[i][3]
     return profits_sum
 
-
+# Oblicza koszt przejazdu
 def drive_cost(solution: List) -> float:
     sum = 0
     for day in solution:
@@ -28,7 +28,7 @@ def drive_cost(solution: List) -> float:
             sum += data.G.get_lenght(day_copy[i][0], day_copy[i + 1][0])*data.cp
     return sum
 
-
+# Oblicza koszt schładzania mleka
 def cooling_cost(solution: List) -> float:
     sum = 0
     for day in solution:
@@ -48,7 +48,7 @@ def cooling_cost(solution: List) -> float:
         sum += cooled_milk * data.cs
     return sum
 
-
+# Funkcja celu. Oblicza całkowity zysk/stratę oraz sprawdza, czy rozwiązanie jest dopuszczalne
 def t_fun(solution) ->Tuple[float, bool]:
     profit = profits_calc(solution)
     d_cost = drive_cost(solution)
