@@ -31,9 +31,9 @@ for i in range(r_size):
     r[i].data = SR[i]
 
 SM = [
-    # [(dni odbioru) 0 ,min 1, max 2, cena 3, kara umowan 4, zgroamdzone mleko 5]
-    [(2, 5), 100, 500, 2.5],
-    [(1, 3, 4), 100, 500]
+    # [(dni odbioru)0 ,min 1, max 2, cena 3, kara umowan 4]
+    [(2, 5), 320, 500, 100, 500],
+    [(1, 3, 4), 100, 500, 200, 500]
 ]
 
 m = []

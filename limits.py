@@ -4,19 +4,20 @@ from typing import List
 import d_struct
 import data
 
-
+#sprawdza jak dawno mleko było odbierane od rolnika
 def check_r_time(solution) -> Tuple[int, bool]:
     old_milk = 0
+    nodes = []
     for day in solution:
         for node_and_milk in day:
             node, milk = node_and_milk
             if node.name == 'r':
-                if node.data[2] > data.max_d:
-                    old_milk += 1
+                nodes.append(node.nr)
+
     return old_milk, old_milk > 0
 
-
-def check_distance(solution: List) -> Tuple[int, bool]:  # zwrca koszt przejechania dystansu oraz czy któregoś dnia przekroczono ograniczenie
+#sprawdza, czy trasa nie jest za długa
+def check_distance(solution: List) -> Tuple[int, bool]:  
     numbers_of_errors: int = 0
     is_day_dist_ok: bool = True
     for dzien in solution:
@@ -24,7 +25,7 @@ def check_distance(solution: List) -> Tuple[int, bool]:  # zwrca koszt przejecha
         lista_krokow = []
         for krok in dzien:
             lista_krokow.append(krok[0])
-        lista_krokow.append(d_struct.b)
+        lista_krokow.append(d_struct.Node("b"))
         for i in range(len(lista_krokow) - 1):
             distance += data.G.get_lenght(lista_krokow[i], lista_krokow[i+1])
         if distance > data.lk:
@@ -35,7 +36,7 @@ def check_distance(solution: List) -> Tuple[int, bool]:  # zwrca koszt przejecha
 
     return numbers_of_errors, is_day_dist_ok
 
-
+#sprawdza, czy nie przekroczono pojemności cysterny
 def check_milk_volume(solution: List) -> Tuple[int, bool]:
     numbers_of_errors: int = 0
     for day in solution:
@@ -58,12 +59,18 @@ def check_milk_volume(solution: List) -> Tuple[int, bool]:
     else:
         return numbers_of_errors, True
 
-
+#oblicza kary umowne z mleczarni
 def mlecz_penalties(solution: List) -> int:
     sum_penalty = 0
-    for dairy in data.SM:
-        if dairy[5] < dairy[1] or dairy[5] > dairy[2]:
-            sum_penalty += dairy[4]
+    for i in range(len(data.SM)):
+        milk_sum = 0
+        for day in solution:
+            for node_and_milk in day:
+                node, milk = node_and_milk
+                if (node.name == 'm') and (node.nr == i):
+                    milk_sum += milk
+        if (milk_sum < data.SM[i][1]) or (milk_sum > data.SM[i][2]):
+            sum_penalty += data.SM[i][4]
     return sum_penalty
 
 
