@@ -5,13 +5,17 @@ import limits
 from typing import List
 from typing import Tuple
 
-
+# Oblicza zysk ze sprzedaży mleka
 def profits_calc(solution: List) -> int:
     profits_sum = 0
-    for day in solution:
-        for node_and_milk in day:
-            node, milk = node_and_milk
-            profits_sum += milk * node.data[3]
+    for i in range(len(data.SM)):
+        milk_sum = 0
+        for day in solution:
+            for node_and_milk in day:
+                node, milk = node_and_milk
+                if (node.name == 'm') and (node.nr == i):
+                    milk_sum += milk
+        profits_sum += milk_sum * data.SM[i][3]
     return profits_sum
 
 
