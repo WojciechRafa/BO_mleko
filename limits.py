@@ -6,15 +6,26 @@ import data
 
 #sprawdza jak dawno mleko było odbierane od rolnika
 def check_r_time(solution) -> Tuple[int, bool]:
-    old_milk = 0
-    nodes = []
-    for day in solution:
-        for node_and_milk in day:
-            node, milk = node_and_milk
-            if node.name == 'r':
-                nodes.append(node.nr)
+    numbers_of_errors: int = 0
+    is_check_r_time_ok: bool = True
+    for i in range(len(data.SR)):
+        sum_milk = 0 
+        nr_day = 0
+        for day in solution:
+            nr_day += 1
+            for node_and_milk in day:
+                node, milk = node_and_milk
+                if (node.name == 'r') and (node.nr == i):
+                    sum_milk += milk
+            if nr_day == 3:
+                nr_day = 0
+                if sum_milk != (data.SR[i][0]*3):
+                    numbers_of_errors += 1
+                sum_milk = 0
+    if numbers_of_errors > 0:
+        is_check_r_time_ok = False
 
-    return old_milk, old_milk > 0
+    return numbers_of_errors, is_check_r_time_ok > 0
 
 #sprawdza, czy trasa nie jest za długa
 def check_distance(solution: List) -> Tuple[int, bool]:  
