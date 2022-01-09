@@ -73,7 +73,7 @@ def mlecz_penalties(solution: List) -> int:
             sum_penalty += data.SM[i][4]
     return sum_penalty
 
-
+#sprawdza, czy mleko jest dostarczane do mleczarnii zgodnie z harmonogramem
 def check_schedule(solution: List) -> Tuple[int, bool]:
     numbers_of_errors: int = 0
     is_shedule_ok: bool = True
@@ -83,7 +83,7 @@ def check_schedule(solution: List) -> Tuple[int, bool]:
         milk_quantity = 0
         for node_milk in day:
             node, milk = node_milk
-            if node.nama =='m':
+            if node.name =='m':
                 if not d in node.data[0]:
                     numbers_of_errors += 1
     if numbers_of_errors > 0:
