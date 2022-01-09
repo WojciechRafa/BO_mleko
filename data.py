@@ -135,7 +135,7 @@ def create_conection(l_ele, con_range):
 
     return np.array(tab_1)
 
-# conection = create_conection(3, con_range)
+# conection = create_conection(l_ele, con_range)
 # print(conection)
 
 ################################################################## wersja 2
