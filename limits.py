@@ -4,6 +4,7 @@ from typing import List
 import d_struct
 import data
 
+
 #sprawdza jak dawno mleko było odbierane od rolnika
 def check_r_time(solution) -> Tuple[int, bool]:
     numbers_of_errors: int = 0
@@ -27,6 +28,7 @@ def check_r_time(solution) -> Tuple[int, bool]:
 
     return numbers_of_errors, is_check_r_time_ok > 0
 
+
 #sprawdza, czy trasa nie jest za długa
 def check_distance(solution: List) -> Tuple[int, bool]:  
     numbers_of_errors: int = 0
@@ -46,6 +48,7 @@ def check_distance(solution: List) -> Tuple[int, bool]:
         is_day_dist_ok = False
 
     return numbers_of_errors, is_day_dist_ok
+
 
 #sprawdza, czy nie przekroczono pojemności cysterny
 def check_milk_volume(solution: List) -> Tuple[int, bool]:

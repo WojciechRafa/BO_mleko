@@ -70,7 +70,7 @@ start_solution = [
 
 # funkcje
 
-def how_many_milk_is_in_point(timetable: List[List[Tuple]], day_nr: int, nr_in_day: int):   # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
+def how_many_milk_is_in_point(timetable: List[List[Tuple]], day_nr: int, nr_in_day: int):  # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
     checked_node = timetable[day_nr][nr_in_day]
 
     if checked_node[0].name == 'b':
