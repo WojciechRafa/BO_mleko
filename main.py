@@ -34,7 +34,7 @@ iter = 0
 #     for ele in steps_list:
 #         new_R = steps.make_step(R,ele)
 #         new_fun_value, is_legal = target_fun.t_fun(new_R)
-#         if (is_legal == True) and (new_fun_value >= fun_value):
+#         if new_fun_value >= fun_value:
 #             R = new_R
 #             fun_value = new_fun_value
 #     values.append(fun_value) 
@@ -49,6 +49,3 @@ iter = 0
 # plt.show()
 
 
-# fun_value, is_legal = target_fun.t_fun(R)
-# print(fun_value)
-# print(is_legal)
