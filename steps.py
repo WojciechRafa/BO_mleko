@@ -33,10 +33,11 @@ class Step:
     def __init__(self, type_, day_: int):
         self.type = type_
         self.day: int = day_
+        self.node_in_day: int = -1
         self.is_posible: int = False
         self.data = []
 
-    def detail_step(self, timetable: List[List[Tuple]], day_nr: int) -> Tuple[bool, List]:  # funkcja zwaraca inoframcje o tym czy można wykonać funkcję oraz listę z dodatkowymi informacjami
+    def detail_step(self, timetable: List[List[Tuple]], day_nr: int) -> Tuple[bool, int, List]:  # funkcja zwaraca inoframcje o tym czy można wykonać funkcję oraz listę z dodatkowymi informacjami
         to_return = None
         day: List[Tuple] = timetable[day_nr]
 
@@ -44,16 +45,16 @@ class Step:
         if self.type == Step_type.add_R:
             pos = random.randrange(len(day)) + 1
             r_nr = random.randrange(len(data.r))
-            to_return = True, [pos, data.r[r_nr]]
+            to_return = True, pos, [data.r[r_nr]]
 
         elif self.type == Step_type.add_M:
             pos = random.randrange(len(day)) + 1
             m_nr = random.randrange(len(data.m))
-            to_return = True, [pos, data.m[m_nr]]
+            to_return = True, pos, [data.m[m_nr]]
 
         elif self.type == Step_type.add_B:
             pos = random.randrange(len(day)) + 1
-            to_return = True, [pos, data.b]
+            to_return = True, pos, [data.b]
 
         # usuwanie
         elif self.type == Step_type.remove_R:
@@ -65,7 +66,7 @@ class Step:
             if len(list_pos) == 0:
                 to_return = False, []
             else:
-                to_return = True, [list_pos[random.randrange(len(list_pos))]]
+                to_return = True, list_pos[random.randrange(len(list_pos))], []
         elif self.type == Step_type.remove_M:
             list_pos = []
             for i in range(len(day)):
@@ -75,7 +76,7 @@ class Step:
             if len(list_pos) == 0:
                 to_return = False, []
             else:
-                to_return = True, [list_pos[random.randrange(len(list_pos))]]
+                to_return = True, list_pos[random.randrange(len(list_pos))], []
         elif self.type == Step_type.remove_B:
             list_pos = []
             for i in range(len(day)):
@@ -85,7 +86,7 @@ class Step:
             if len(list_pos) == 0:
                 to_return = False, []
             else:
-                to_return = True, [list_pos[random.randrange(len(list_pos))]]
+                to_return = True, list_pos[random.randrange(len(list_pos))], []
 
         elif self.type == Step_type.increase_R:
             r_list: List[int] = []
@@ -112,7 +113,7 @@ class Step:
                 else:
                     max_added_milk = data.pc  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
 
-                to_return = True, [chosed_node, random.randrange(max_added_milk)]
+                to_return = True, chosed_node, [random.randrange(max_added_milk)]
 
         elif self.type == Step_type.decrease_R:
             r_list: List[int] = []
@@ -125,7 +126,7 @@ class Step:
             else:
                 chosed_node: int = r_list[random.randrange(len(r_list))]
                 max_decrease = timetable[self.day][chosed_node][1]
-                to_return = True, [chosed_node, random.randrange(max_decrease)]
+                to_return = True, chosed_node, [random.randrange(max_decrease)]
 
         elif self.type == Step_type.take_max_R:# w data podawana jest maksymalna wartość jaka może być doładowana
             r_list: List[int] = []
@@ -153,7 +154,7 @@ class Step:
                 else:
                     is_in_limits = False
                 if is_in_limits:
-                    to_return = True, [chosed_node, max_added_milk]
+                    to_return = True, chosed_node, [max_added_milk]
                 else:
                     to_return = False, []  # jeżeli nie ma możliwości dokonania ruchu
 
@@ -177,7 +178,7 @@ class Step:
                 else:
                     max_added_milk = day[chosed_node][0].data[2]  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
 
-                to_return = True, [chosed_node, random.randrange(max_added_milk)]
+                to_return = True, chosed_node, [random.randrange(max_added_milk)]
 
         elif self.type == Step_type.decrease_M:
             m_list: List[int] = []
@@ -190,7 +191,7 @@ class Step:
             else:
                 chosed_node: int = m_list[random.randrange(len(m_list))]
                 max_decrease = timetable[self.day][chosed_node][1]
-                to_return = True, [chosed_node, random.randrange(max_decrease)]
+                to_return = True, chosed_node, [random.randrange(max_decrease)]
 
         elif self.type == Step_type.take_max_M:
             m_list: List[int] = []
@@ -206,7 +207,7 @@ class Step:
                 milk_in_dairy = data.how_many_milk_is_in_point(timetable, self.day, chosed_node)
 
                 if milk_in_dairy < max_milk_to_node:
-                    to_return = True, [chosed_node, max_milk_to_node - milk_in_dairy]
+                    to_return = True, chosed_node, [max_milk_to_node - milk_in_dairy]
                 else:
                     to_return = False, []
 
@@ -224,7 +225,7 @@ class Step:
                 milk_in_dairy = data.how_many_milk_is_in_point(timetable, self.day, chosed_node)
 
                 if milk_in_dairy < min_milk_to_node:
-                    to_return = True, [chosed_node, milk_in_dairy - min_milk_to_node]
+                    to_return = True, chosed_node, [milk_in_dairy - min_milk_to_node]
                 else:
                     to_return = False, []
 
@@ -247,7 +248,7 @@ class Step:
                     max_added_milk = car_limit
                 else:
                     max_added_milk = data.pc
-                to_return = True, [chosed_node, random.randrange(max_added_milk)]
+                to_return = True, chosed_node, [random.randrange(max_added_milk)]
 
         elif self.type == Step_type.decrease_B:
             b_list: List[int] = []
@@ -266,12 +267,13 @@ class Step:
 
                 max_decrase_milk = 0
                 if limit > 0:
-                    to_return = True, [chosed_node, random.randrange(limit)]
+                    to_return = True, chosed_node, [random.randrange(limit)]
                 else:
                     to_return = False, []
 
         self.is_posible = to_return[0]
-        self.data = to_return[1]
+        self.node_in_day = to_return[1]
+        self.data = to_return[2]
 
         return to_return
 
@@ -288,7 +290,7 @@ def get_random_steps(timetable: List[List[Tuple]], n: int, max_fail_nr: int = 20
             imposible_move_list.append((move_type, day_nr))
         else:
             step: Step = Step(move_type, day_nr)
-            is_posible, step_data = step.detail_step(timetable, day_nr)
+            is_posible, moment_in_day, step_data = step.detail_step(timetable, day_nr)
             if not is_posible:
                 imposible_move_list.append((move_type, day_nr))
             else:
