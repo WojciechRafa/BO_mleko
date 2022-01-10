@@ -61,16 +61,16 @@ G.set_node_list(node_list)
 G.set_connection(connection)
 
 start_solution = [
-    [(b, 0), (r[0], 30), (r[1], 50), (m[1], 50), (r[2], 60)],
-    [(b, 0), (r[1], 100), (r[0], 100), (m[1], 160), (m[0], 40)],
-    [(b, 0), (r[0], 30), (r[1], 50), (r[2], 100), (m[0], 180)],
-    [(b, 0), (r[0], 30), (r[2], 50), (m[0], 50), (r[2], 60)],
-    [(b, 0), (r[1], 100), (r[0], 100), (m[1], 160), (m[0], 40)]]
+    [[b, 0], [r[0],  30], [r[1],  50], [m[1],  50], [r[2],  60]],
+    [[b, 0], [r[1], 100], [r[0], 100], [m[1], 160], [m[0],  40]],
+    [[b, 0], [r[0],  30], [r[1],  50], [r[2], 100], [m[0], 180]],
+    [[b, 0], [r[0],  30], [r[2],  50], [m[0],  50], [r[2],  60]],
+    [[b, 0], [r[1], 100], [r[0], 100], [m[1], 160], [m[0],  40]]]
 
 
 # funkcje
 
-def how_many_milk_is_in_point(timetable: List[List[Tuple]], day_nr: int, nr_in_day: int):  # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
+def how_much_milk_is_in_point(timetable: List[List[List]], day_nr: int, nr_in_day: int):  # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
     checked_node = timetable[day_nr][nr_in_day]
 
     if checked_node[0].name == 'b':
@@ -87,6 +87,7 @@ def how_many_milk_is_in_point(timetable: List[List[Tuple]], day_nr: int, nr_in_d
             milk_in_base += milk_on_car
 
         milk_on_car = 0
+        tym = G
         for node in G.node_list[day_nr][:nr_in_day]:
             if node[0].name == 'b':
                 milk_in_base -= node[1]  # minus ponieważ liczba w node mówi o tym ile  mleka trafiło do ciężarówki

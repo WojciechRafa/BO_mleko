@@ -19,8 +19,12 @@ if __name__ == '__main__':
     R = []  # rozwiązanie jest listą 5-ciu list krotek zawierających obiekt typu node i ilość mleka wlaną/wylaną w danym miejscu
     R = data.start_solution #początkowe rozwiązanie losowe
 
-    # result = steps.get_random_steps(R, 5)
-    # print(result)
+    result = steps.get_random_steps(R, 5)
+    print(result)
+
+    for step in result:
+        changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
+        print(changed_ttable)
 
 iter = 0
 

@@ -73,6 +73,7 @@ def check_milk_volume(solution: List) -> Tuple[int, bool]:
     else:
         return numbers_of_errors, True
 
+
 #oblicza kary umowne z mleczarni
 def mlecz_penalties(solution: List) -> int:
     sum_penalty = 0
@@ -86,6 +87,7 @@ def mlecz_penalties(solution: List) -> int:
         if (milk_sum < data.SM[i][1]) or (milk_sum > data.SM[i][2]):
             sum_penalty += data.SM[i][4]
     return sum_penalty
+
 
 #sprawdza, czy mleko jest dostarczane do mleczarnii zgodnie z harmonogramem
 def check_schedule(solution: List) -> Tuple[int, bool]:
