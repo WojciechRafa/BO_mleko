@@ -68,6 +68,7 @@ start_solution = [
     [[b, 0], [r[0],  30], [r[2],  50], [m[0],  50], [r[2],  60]],
     [[b, 0], [r[1], 100], [r[0], 100], [m[1], 160], [m[0],  40]]]
 
+
 # funkcje
 def how_much_milk_is_in_point(timetable: List[List[List]], day_nr: int, nr_in_day: int):  # ilość mleka na danym przystanku przed iterwencją wozu z mlekiem
     checked_node = timetable[day_nr][nr_in_day]

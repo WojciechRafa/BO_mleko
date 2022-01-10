@@ -218,8 +218,8 @@ class Step:
                 if car_limit > 0:
                     max_added_milk = car_limit
                 else:
-                    max_added_milk = day[chosed_node][0].data[
-                        2]  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
+                    # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
+                    max_added_milk = day[chosed_node][0].data[2] // 2
 
                 to_return = True, chosed_node, [random.randrange(max_added_milk)]
 
@@ -347,8 +347,11 @@ def get_random_steps(timetable: List[List[Tuple]], n: int, max_fail_nr: int = 20
 # day_nr i node_in_day odnaoszą się do pierwszego noda którego możemy modyfikować
 # diff - ilość mleka która idzie na pojazd ( jeżeli jest minus to ilość mleka która wychodzi z pojazdu )
 def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day: int, milk_change: int) -> Tuple[bool, int]:
+    print("after")
+    print("milk change - {}".format(milk_change))
     day = day_nr
     if milk_change > 0:
+        print("milk_change > 0")
         is_positive = True
         for i in range(node_in_day, len(timetable[day])):
             node = timetable[day][i][0]
@@ -363,39 +366,41 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
                     milk_change = 0
                     break
                 else:
-                    diff = milk_change - timetable[day][i][1]
+                   # diff = milk_change - timetable[day][i][1]
+
+                    milk_change -= timetable[day][i][1]
                     timetable[day][i][1] = 0
-                    milk_change -= diff
 
             if node.name == 'b':
                 timetable[day][i][1] -= milk_change
                 break
 
-        if milk_change > 0:
-            for i_day in range(day_nr + 1, 5):
-                day = i_day
-                for i in range(len(timetable[day])):
-                    node = timetable[day][i][0]
-                    if node.name == 'm':
-                        timetable[day][i][1] += milk_change
-                        milk_change = 0
-                        break
-
-                    if node.name == 'r':
-                        if timetable[day][i][1] >= milk_change:
-                            timetable[day][i][1] -= milk_change
-                            milk_change = 0
-                            break
-                        else:
-                            diff = milk_change - timetable[day][i][1]
-                            timetable[day][i][1] = 0
-                            milk_change -= diff
-
-                    if node.name == 'b':
-                        timetable[day][i][1] -= milk_change
-                        break
+        #if milk_change > 0:
+        #    for i_day in range(day_nr + 1, 5):
+        #        day = i_day
+        #        for i in range(len(timetable[day])):
+        #            node = timetable[day][i][0]
+        #            if node.name == 'm':
+        #                timetable[day][i][1] += milk_change
+        #                milk_change = 0
+        #                break
+#
+        #            if node.name == 'r':
+        #                if timetable[day][i][1] >= milk_change:
+        #                    timetable[day][i][1] -= milk_change
+        #                    milk_change = 0
+        #                    break
+        #                else:
+        #                    diff = milk_change - timetable[day][i][1]
+        #                    timetable[day][i][1] = 0
+        #                    milk_change -= diff
+#
+        #            if node.name == 'b':
+        #                timetable[day][i][1] -= milk_change
+        #                break
 
     else:
+        print("milk_change < 0")
         is_positive = False
         milk_change = abs(milk_change)  # !!! milk change -ile mleka musimy dodatkowo zdobyć
         day = day_nr
@@ -407,35 +412,37 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
                     milk_change = 0
                     break
                 else:
-                    diff = milk_change - timetable[day][i][1]
-                    timetable[day][i][1] = 0
-                    milk_change -= diff
+                    #diff = milk_change - timetable[day][i][1]
 
-            if node.name == 'r':
+                    milk_change -= timetable[day][i][1]
+                    timetable[day][i][1] = 0
+
+            elif node.name == 'r':
+                max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
+                if max_added >= milk_change:
+                    timetable[day][i][1] += milk_change
+                    milk_change = 0
+                    break
+                elif max_added > 0:
+                    #diff = milk_change - max_added
+                    timetable[day][i][1] = 0
+                    milk_change -= max_added
+
+            elif node.name == 'b':
                 max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                 if max_added >= milk_change:
                     timetable[day][i][1] += milk_change
                     milk_change = 0
                     break
                 else:
-                    diff = milk_change - max_added
-                    timetable[day][i][1] = 0
-                    milk_change -= diff
-
-            if node.name == 'b':
-                max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
-                if max_added >= milk_change:
-                    timetable[day][i][1] += milk_change
-                    milk_change = 0
-                    break
-                else:
-                    diff = milk_change - max_added
-                    timetable[day][i][1] += diff
-                    milk_change -= diff
+                   # diff = milk_change - max_added
+                    timetable[day][i][1] += max_added
+                    milk_change -= max_added
 
         if milk_change > 0:
             for i_day in range(day_nr + 1, 5):
                 day = i_day
+                had_break = False
                 for i in range(len(timetable[day])):
                     node = timetable[day][i][0]
                     if node.name == 'm':
@@ -444,9 +451,10 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
                             milk_change = 0
                             break
                         else:
-                            diff = milk_change - timetable[day][i][1]
+                            #diff = milk_change - timetable[day][i][1]
+
+                            milk_change -= timetable[day][i][1]
                             timetable[day][i][1] = 0
-                            milk_change -= diff
 
                     if node.name == 'r':
                         max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
@@ -454,10 +462,10 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
                             timetable[day][i][1] += milk_change
                             milk_change = 0
                             break
-                        else:
-                            diff = milk_change - max_added
+                        elif max_added > 0:
+                            #diff = milk_change - max_added
                             timetable[day][i][1] = 0
-                            milk_change -= diff
+                            milk_change -= max_added
 
                     if node.name == 'b':
                         max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
@@ -466,10 +474,10 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
                             milk_change = 0
                             break
                         else:
-                            diff = milk_change - max_added
-                            timetable[day][i][1] += diff
+                            #diff = milk_change - max_added
+                            timetable[day][i][1] += max_added
 
-                            milk_change -= diff
+                            milk_change -= max_added
     if not is_positive:
         milk_change = milk_change * (-1)
 
@@ -483,9 +491,12 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
 # diff - ilość mleka która idzie na pojazd ( jeżeli jest minus to ilość mleka która wychodzi z pojazdu )
 def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_day: int, milk_change: int) -> Tuple[
     bool, int]:
+    print("before")
+    print("milk change - {}".format(milk_change))
     is_positive = True
     day = day_nr
     if milk_change > 0:
+        print("milk_change > 0")
         for i in reversed(range(node_in_day)):  # użycie reversed z jakiś powodów wywołuje warrninga poniżej
             node = timetable[day][i][0]
             if node.name == 'm':
@@ -499,9 +510,9 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                     milk_change = 0
                     break
                 else:
-                    diff = milk_change - timetable[day][i][1]
+                    #diff = milk_change - timetable[day][i][1]
+                    milk_change -= timetable[day][i][1]
                     timetable[day][i][1] = 0
-                    milk_change -= diff
 
             if node.name == 'b':
                 timetable[day][i][1] -= milk_change
@@ -523,15 +534,17 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                             milk_change = 0
                             break
                         else:
-                            diff = milk_change - timetable[day][i][1]
+                            #diff = milk_change - timetable[day][i][1]
+
+                            milk_change -= timetable[day][i][1]
                             timetable[day][i][1] = 0
-                            milk_change -= diff
 
                     if node.name == 'b':
                         timetable[day][i][1] -= milk_change
                         break
 
     else:
+        print("milk_change < 0")
         is_positive = False
         milk_change = abs(milk_change)  # !!! milk change -ile mleka musimy dodatkowo zdobyć
         day = day_nr
@@ -543,9 +556,10 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                     milk_change = 0
                     break
                 else:
-                    diff = milk_change - timetable[day][i][1]
+                    #diff = milk_change - timetable[day][i][1]
+
+                    milk_change -= timetable[day][i][1]
                     timetable[day][i][1] = 0
-                    milk_change -= diff
 
             if node.name == 'r':
                 max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
@@ -553,10 +567,10 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                     timetable[day][i][1] += milk_change
                     milk_change = 0
                     break
-                else:
-                    diff = milk_change - max_added
+                elif max_added > 0:
+                    #diff = milk_change - max_added
                     timetable[day][i][1] = 0
-                    milk_change -= diff
+                    milk_change -= max_added
 
             if node.name == 'b':
                 max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
@@ -565,9 +579,9 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                     milk_change = 0
                     break
                 else:
-                    diff = milk_change - max_added
-                    timetable[day][i][1] += diff
-                    milk_change -= diff
+                    #diff = milk_change - max_added
+                    timetable[day][i][1] += max_added
+                    milk_change -= max_added
 
         if milk_change > 0:
             for i_day in range(day_nr + 1, 5):
@@ -580,9 +594,10 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                             milk_change = 0
                             break
                         else:
-                            diff = milk_change - timetable[day][i][1]
+                            #diff = milk_change - timetable[day][i][1]
+                            milk_change -= timetable[day][i][1]
                             timetable[day][i][1] = 0
-                            milk_change -= diff
+
 
                     if node.name == 'r':
                         max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
@@ -590,10 +605,10 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                             timetable[day][i][1] += milk_change
                             milk_change = 0
                             break
-                        else:
-                            diff = milk_change - max_added
+                        elif max_added > 0:
+                            #diff = milk_change - max_added
                             timetable[day][i][1] = 0
-                            milk_change -= diff
+                            milk_change -= max_added
 
                     if node.name == 'b':
                         max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
@@ -602,10 +617,10 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                             milk_change = 0
                             break
                         else:
-                            diff = milk_change - max_added
-                            timetable[day][i][1] += diff
+                            #diff = milk_change - max_added
+                            timetable[day][i][1] += max_added
+                            milk_change -= max_added
 
-                            milk_change -= diff
     if not is_positive:
         milk_change = milk_change * (-1)
 
@@ -688,7 +703,7 @@ def make_step(timetable: List[List[List]], step: Step) -> List[List[List]]:
         update_time_table(timetable, step, milk)
 
     elif step.type == Step_type.take_max_M or step.type == Step_type.take_min_M:
-        timetable[step.day][step.node_in_day][1] -= step.data[0]
+        timetable[step.day][step.node_in_day][1] += step.data[0]
         milk = step.data[0]
         update_time_table(timetable, step, milk*(-1))
 
