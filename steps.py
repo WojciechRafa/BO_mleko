@@ -73,8 +73,7 @@ class Step:
             if car_limit > 0:
                 max_added_milk = car_limit
             else:
-                max_added_milk = data.m[m_nr].data[
-                    2]  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
+                max_added_milk = data.m[m_nr].data[2]  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
 
             to_return = True, pos, [data.m[m_nr], random.randrange(max_added_milk)]
 
@@ -82,16 +81,13 @@ class Step:
             pos = random.randrange(len(day)) + 1
 
             milk_on_car: int = features.sum_milk(day[:pos])
-
             car_limit: int = milk_on_car - day[pos - 1][1]
 
-            max_added_milk = 0
             if car_limit > 0:
-                max_added_milk = car_limit
+                to_return = True, pos, [data.b, random.randrange(car_limit)]
             else:
-                max_added_milk = data.pc
+                to_return = True, pos, [data.b, (-1) * random.randrange(milk_on_car)]
 
-            to_return = True, pos, [data.b, random.randrange(max_added_milk)]
 
         # usuwanie
         elif self.type == Step_type.remove_R:
@@ -101,7 +97,7 @@ class Step:
                     list_pos.append(i)
 
             if len(list_pos) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 to_return = True, list_pos[random.randrange(len(list_pos))], []
         elif self.type == Step_type.remove_M:
@@ -111,17 +107,17 @@ class Step:
                     list_pos.append(i)
 
             if len(list_pos) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 to_return = True, list_pos[random.randrange(len(list_pos))], []
         elif self.type == Step_type.remove_B:
             list_pos = []
-            for i in range(len(day)):
+            for i in range(1, len(day)):
                 if day[i][0] in data.r:
                     list_pos.append(i)
 
             if len(list_pos) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 to_return = True, list_pos[random.randrange(len(list_pos))], []
 
@@ -132,7 +128,7 @@ class Step:
                     r_list.append(i)
 
             if len(r_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = r_list[random.randrange(len(r_list))]
                 milk_on_car = features.sum_milk(day[:chosed_node])
@@ -160,7 +156,7 @@ class Step:
                     r_list.append(i)
 
             if len(r_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = r_list[random.randrange(len(r_list))]
                 max_decrease = timetable[self.day][chosed_node][1]
@@ -173,7 +169,7 @@ class Step:
                     r_list.append(i)
 
             if len(r_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = r_list[random.randrange(len(r_list))]
                 milk_on_car = features.sum_milk(day[:chosed_node + 1])
@@ -211,7 +207,7 @@ class Step:
                     m_list.append(i)
 
             if len(m_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = m_list[random.randrange(len(m_list))]
                 milk_on_car: int = features.sum_milk(day[:chosed_node])
@@ -234,7 +230,7 @@ class Step:
                     m_list.append(i)
 
             if len(m_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = m_list[random.randrange(len(m_list))]
                 max_decrease = timetable[self.day][chosed_node][1]
@@ -247,7 +243,7 @@ class Step:
                     m_list.append(i)
 
             if len(m_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = m_list[random.randrange(len(m_list))]
                 max_milk_to_node = timetable[self.day][chosed_node][0].data[2]
@@ -265,7 +261,7 @@ class Step:
                     m_list.append(i)
 
             if len(m_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = m_list[random.randrange(len(m_list))]
                 max_milk_to_node = timetable[self.day][chosed_node][0].data[1]
@@ -283,7 +279,7 @@ class Step:
                     b_list.append(i)
 
             if len(b_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = b_list[random.randrange(len(b_list))]
                 milk_on_car: int = features.sum_milk(day[:chosed_node])
@@ -304,7 +300,7 @@ class Step:
                     b_list.append(i)
 
             if len(b_list) == 0:
-                to_return = False, []
+                to_return = False, None, []
             else:
                 chosed_node: int = b_list[random.randrange(len(b_list))]
                 milk_on_car: int = features.sum_milk(day[:chosed_node])
@@ -316,7 +312,7 @@ class Step:
                 if limit > 0:
                     to_return = True, chosed_node, [random.randrange(limit)]
                 else:
-                    to_return = False, []
+                    to_return = False, None, []
 
         self.is_posible = to_return[0]
         self.node_in_day = to_return[1]
@@ -350,8 +346,7 @@ def get_random_steps(timetable: List[List[Tuple]], n: int, max_fail_nr: int = 20
 
 # day_nr i node_in_day odnaoszą się do pierwszego noda którego możemy modyfikować
 # diff - ilość mleka która idzie na pojazd ( jeżeli jest minus to ilość mleka która wychodzi z pojazdu )
-def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day: int, milk_change: int) -> Tuple[
-    bool, int]:
+def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day: int, milk_change: int) -> Tuple[bool, int]:
     day = day_nr
     if milk_change > 0:
         is_positive = True
@@ -419,7 +414,7 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
             if node.name == 'r':
                 max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                 if max_added >= milk_change:
-                    timetable += milk_change
+                    timetable[day][i][1] += milk_change
                     milk_change = 0
                     break
                 else:
@@ -430,7 +425,7 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
             if node.name == 'b':
                 max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                 if max_added >= milk_change:
-                    timetable += milk_change
+                    timetable[day][i][1] += milk_change
                     milk_change = 0
                     break
                 else:
@@ -456,7 +451,7 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
                     if node.name == 'r':
                         max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                         if max_added >= milk_change:
-                            timetable += milk_change
+                            timetable[day][i][1] += milk_change
                             milk_change = 0
                             break
                         else:
@@ -467,7 +462,7 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
                     if node.name == 'b':
                         max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                         if max_added >= milk_change:
-                            timetable += milk_change
+                            timetable[day][i][1] += milk_change
                             milk_change = 0
                             break
                         else:
@@ -555,7 +550,7 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
             if node.name == 'r':
                 max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                 if max_added >= milk_change:
-                    timetable += milk_change
+                    timetable[day][i][1] += milk_change
                     milk_change = 0
                     break
                 else:
@@ -566,7 +561,7 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
             if node.name == 'b':
                 max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                 if max_added >= milk_change:
-                    timetable += milk_change
+                    timetable[day][i][1] += milk_change
                     milk_change = 0
                     break
                 else:
@@ -592,7 +587,7 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                     if node.name == 'r':
                         max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                         if max_added >= milk_change:
-                            timetable += milk_change
+                            timetable[day][i][1] += milk_change
                             milk_change = 0
                             break
                         else:
@@ -603,7 +598,7 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                     if node.name == 'b':
                         max_added = data.how_much_milk_is_in_point(timetable, day, i) - timetable[day][i][1]
                         if max_added >= milk_change:
-                            timetable += milk_change
+                            timetable[day][i][1] += milk_change
                             milk_change = 0
                             break
                         else:
@@ -669,7 +664,7 @@ def make_step(timetable: List[List[List]], step: Step) -> List[List[List]]:
 
     elif step.type == Step_type.increase_R or step.type == Step_type.increase_M or step.type == Step_type.increase_B:
 
-        timetable[step.day][step.node_in_day] += step.data[0]
+        timetable[step.day][step.node_in_day][1] += step.data[0]
         if step.type == Step_type.increase_R or step.type == Step_type.increase_B:
             milk = step.data[0]
         else:
@@ -679,7 +674,7 @@ def make_step(timetable: List[List[List]], step: Step) -> List[List[List]]:
 
     elif step.type == Step_type.decrease_R or step.type == Step_type.decrease_M or step.type == Step_type.decrease_B:
 
-        timetable[step.day][step.node_in_day] -= step.data[0]
+        timetable[step.day][step.node_in_day][1] -= step.data[0]
         if step.type == Step_type.decrease_R or step.type == Step_type.decrease_B:
             milk = step.data[0] * (-1)
         else:
@@ -688,12 +683,12 @@ def make_step(timetable: List[List[List]], step: Step) -> List[List[List]]:
         update_time_table(timetable, step, milk)
 
     elif step.type == Step_type.take_max_R:
-        timetable[step.day][step.node_in_day] += step.data[0]
+        timetable[step.day][step.node_in_day][1] += step.data[0]
         milk = step.data[0]
         update_time_table(timetable, step, milk)
 
     elif step.type == Step_type.take_max_M or step.type == Step_type.take_min_M:
-        timetable[step.day][step.node_in_day] -= step.data[0]
+        timetable[step.day][step.node_in_day][1] -= step.data[0]
         milk = step.data[0]
         update_time_table(timetable, step, milk*(-1))
 
