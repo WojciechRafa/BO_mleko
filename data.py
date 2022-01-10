@@ -100,14 +100,33 @@ k_range = (100, 500) # zakres kar umownych
 
 
 def create_SM(lm, min_m_m, max_m_m, c_range, k_range):
+    dni = [1, 2, 3, 4, 5]
     tab = []
-    for i in range(lm):
-        
+    old = []
+    for i in range(lm-1):
+        she = []
+        #losowanie dni dostaw
+        for j in range(random.randrange(2, 4, 1)):
+            d = random.randrange(1, 5, 1)
+            she.append(d)
+            old.append(d)
         min_il = random.randrange(min_m_m[0], min_m_m[1], 1)
         max_il = random.randrange(max_m_m[0], max_m_m[1], 1)
         c = random.randrange(c_range[0], c_range[1], 1)
         k = random.randrange(k_range[0], k_range[1], 1)
-        tab.append([min_il, max_il, c, k])
+        tab.append([she, min_il, max_il, c, k])
+    #tworzenie ostatniego elementu
+    she=[]
+    for ele in dni:
+        if ele not in old:
+            she.append(ele)
+    if she == []:
+        she = [1,3,5] 
+    min_il = random.randrange(min_m_m[0], min_m_m[1], 1)
+    max_il = random.randrange(max_m_m[0], max_m_m[1], 1)
+    c = random.randrange(c_range[0], c_range[1], 1)
+    k = random.randrange(k_range[0], k_range[1], 1)
+    tab.append([she, min_il, max_il, c, k])
     return tab
 
 # SM = create_SM(lm, min_m_m, max_m_m, c_range, k_range)
