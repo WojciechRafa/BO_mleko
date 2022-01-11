@@ -104,16 +104,19 @@ def how_much_milk_is_in_point(timetable: List[List[List]], day_nr: int, nr_in_da
             for node in day:
                 if node[0] == checked_node[0]:
                     milk_in_dairy += node[1]
+
         for node in timetable[day_nr][:nr_in_day]:
-            if node == checked_node:
+            if node[0] == checked_node[0]:
                 milk_in_dairy += node[1]
+
         return milk_in_dairy
     elif checked_node[0].name == 'r':
-        milk_at_farmer = checked_node[0].data[0] * day_nr
+        milk_at_farmer = checked_node[0].data[0] * (day_nr + 1) # założono, że w poniedzaiłek farmy mają mleko z jednego dnia
         for day in timetable[:day_nr]:
             for node in day:
                 if node[0] == checked_node[0]:
                     milk_at_farmer -= node[1]
+
         for node in timetable[day_nr][:nr_in_day]:
             if node[0] == checked_node[0]:
                 milk_at_farmer -= node[1]
