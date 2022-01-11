@@ -113,6 +113,7 @@ if __name__ == '__main__':
                 is_acceptable.append(is_accpet[max_el_idx])
                 R = result_list[max_el_idx]
                 break
+        if 
 
         #obsługa listy tabu
         if len(TL) >= TL_dl:
@@ -126,7 +127,7 @@ if __name__ == '__main__':
         for w in day:
             print(w[0].name,w[0].nr,'->',w[1])
         print('\r')
-    print('Zysk:',fun_value)
+    print('Zysk:',max(values))
     #wizualizacja przebiegu algorytmu
     plt.plot(values)
     plt.xlabel('iteracja')
