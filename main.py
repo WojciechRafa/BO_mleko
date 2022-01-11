@@ -28,35 +28,36 @@ if __name__ == '__main__':
     #         print(day)
     #     print('\n\n')
 
-iter = 0
-TL = []
-made_move = 0
-#pierwszy obieg algorytmu 
-# fun_value, is_legal = target_fun.t_fun(R)
+    iter = 0
+    TL = []
+    made_move = 0
+    #pierwszy obieg algorytmu 
+    fun_value, is_legal = target_fun.t_fun(R)
 
 
-while iter < max_iter:
-    #generowanie nowych rozwiązań i wybór najlepszego
-    steps_list = steps.get_random_steps(R, n)
-    for step in steps_list:
-        changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
-        new_fun_value, is_legal = target_fun.t_fun(changed_ttable)
-        if new_fun_value >= fun_value:
-            R = changed_ttable
-            fun_value = new_fun_value
-            made_move = step
-    values.append(fun_value) 
-   
-    #obsługa listy tabu
-    TL.append(made_move)
-    if len(TL) >= TL_dl:
-        TL.remove(TL[0])
+    while iter < max_iter:
+        #generowanie nowych rozwiązań i wybór najlepszego
+        steps_list = steps.get_random_steps(R, n)
+        for step in steps_list:
+            if step not in TL:
+                changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
+                new_fun_value, is_legal = target_fun.t_fun(changed_ttable)
+                if new_fun_value >= fun_value:
+                    R = changed_ttable
+                    fun_value = new_fun_value
+                    made_move = step
+        values.append(fun_value) 
+    
+        #obsługa listy tabu
+        TL.append(made_move)
+        if len(TL) >= TL_dl:
+            TL.remove(TL[0])
 
 
-#wizualizacja wyników
-# plt.plot(values)
-# plt.xlabel('iteracja')
-# plt.ylabel('wartość')
-# plt.show()
+    #wizualizacja wyników
+    # plt.plot(values)
+    # plt.xlabel('iteracja')
+    # plt.ylabel('wartość')
+    # plt.show()
 
 
