@@ -14,6 +14,7 @@ n = 5 #liczba sprawdzanych kroków w jednej iteracji
 TL_dl = 3 #długość listy tabu
 #pomocnicze listy do badania przebiegu algorytmu
 values = [] #lista przechowująca kolejne wartości funkcji celu
+is_acceptable = []#lista przechowująca kolejne informacje o wykonywalniści funkcji
 
 lr = 5 # liczba rolników
 min_r_m = 20 # minimalna dzienna liczba produkowanych litrów mleka w gospodarstwie
@@ -55,7 +56,7 @@ if __name__ == '__main__':
     #     changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
     #     for day in changed_ttable:
     #         print(day)
-    #     print('\n\n')
+
 
     iter = 0
     TL = []
@@ -63,19 +64,60 @@ if __name__ == '__main__':
     #pierwszy obieg algorytmu
     fun_value, is_legal = target_fun.t_fun(R)
 
+    the_best_result = float('inf')
 
     while iter < max_iter:
         #generowanie nowych rozwiązań i wybór najlepszego
         steps_list = steps.get_random_steps(R, n)
+
+        score = []
+        result_list = []
+        s_list = []
+        is_accpet = []
+
         for step in steps_list:
-            if step not in TL:
-                changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
-                new_fun_value, is_legal = target_fun.t_fun(changed_ttable)
-                if new_fun_value >= fun_value:
-                    R = changed_ttable
-                    fun_value = new_fun_value
-                    made_move = step
-        values.append(fun_value)
+            changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
+            new_fun_value, is_legal = target_fun.t_fun(changed_ttable)
+
+            score.append(new_fun_value)
+            result_list.append(changed_ttable)
+            s_list.append(step)
+            is_accpet.append(is_legal)
+
+        while len(score) > 0:
+            max_el = max(score)
+            max_el_idx = score.index(max_el)
+            the_best_step = s_list[max_el_idx]
+
+            if the_best_step not in TL:
+                values.append(max_el)
+                TL.append(s_list[max_el_idx])
+                is_acceptable.append(is_accpet[max_el_idx])
+                R = result_list[max_el_idx]
+                break
+            elif len(score) > 1:
+                if max_el > the_best_result:
+                    values.append(max_el)
+                    TL.append(s_list[max_el_idx])
+                    is_acceptable.append(is_accpet[max_el_idx])
+                    R = result_list[max_el_idx]
+                    break
+                else:
+                    del score[max_el_idx]
+                    del result_list[max_el_idx]
+                    del s_list[max_el_idx]
+                    del is_accpet[max_el_idx]
+
+                    max_el = max(score)
+                    max_el_idx = score.index(max_el)
+            else:
+                values.append(max_el)
+                TL.append(s_list[max_el_idx])
+                is_acceptable.append(is_accpet[max_el_idx])
+                R = result_list[max_el_idx]
+                break
+
+
 
         #obsługa listy tabu
         TL.append(made_move)

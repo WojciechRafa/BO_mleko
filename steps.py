@@ -37,6 +37,12 @@ class Step:
         self.is_posible: int = False
         self.data = []
 
+   # def __eq__(self, other):
+   #     if self.type == other.type and self.day == other.day and self.node_in_day == other.node_in_day:
+   #         return True
+   #     else:
+   #         return False
+
     def detail_step(self, timetable: List[List[List]], day_nr: int) -> Tuple[
         bool, int, List]:  # funkcja zwaraca inoframcje o tym czy można wykonać funkcję oraz listę z dodatkowymi informacjami
         to_return = None
