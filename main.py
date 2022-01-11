@@ -56,7 +56,7 @@ if __name__ == '__main__':
     #     changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
     #     for day in changed_ttable:
     #         print(day)
-
+    #     print('\n\n')
 
     iter = 0
     TL = []
@@ -124,8 +124,16 @@ if __name__ == '__main__':
         if len(TL) >= TL_dl:
             TL.remove(TL[0])
 
-
-    #wizualizacja wyników
+    #wyświetlanie wyników
+    nr = 0
+    for day in R:
+        nr += 1
+        print('Dzień',nr)
+        for w in day:
+            print(w[0].name,w[0].nr,'->',w[1])
+        print('\r')
+    print('Zysk:',fun_value)
+    #wizualizacja przebiegu algorytmu
     # plt.plot(values)
     # plt.xlabel('iteracja')
     # plt.ylabel('wartość')
