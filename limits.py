@@ -89,7 +89,7 @@ def mlecz_penalties(solution: List) -> int:
         if milk_sum < data.SM[i][1]:
             sum_penalty += 1 * (data.SM[i][1]-milk_sum)
         if milk_sum > data.SM[i][2]:
-            sum_penalty += 1000 * (milk_sum - data.SM[i][1])
+            sum_penalty += 1 * (milk_sum - data.SM[i][1])
     return sum_penalty
 
 
