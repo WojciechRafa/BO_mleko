@@ -128,3 +128,18 @@ def check_r_milk_volume(solution: List) -> Tuple[int, bool]:
     if cost > 0:
         is_ok = False                
     return cost, is_ok
+
+def check_milk_orgin(solution: List[List[List]]) -> Tuple[int, bool]:# sprawdzenie tego czy przepływ mleka ma sens
+    penalty = 0
+    is_ok = True
+    for day in solution:
+        milk_in_day = 0
+        for node in day:
+            if node[0].name == 'm':
+                milk_in_day -= node[1]
+            else:
+                milk_in_day += node[1]
+            if milk_in_day < 0:
+                is_ok = False
+                penalty += data.orgin_stat_error + abs(milk_in_day)*data.origin_p_cost
+    return penalty, is_ok

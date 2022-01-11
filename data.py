@@ -13,11 +13,15 @@ mc = 0  # liczba litrów w cysternie
 max_d = 3  # maksymalna liczba dni przez któe mleko może być u rolnika
 
 old_milk_error_cost = 2000
-dist_error_cost = 2000
-volume_error_cost = 2000
+dist_error_cost = 1000
+volume_error_cost = 1000
+orgin_stat_error = 1000
+milk_volume_stat_cost = 1000
 
 # kary proporcjonalne
 dist_cost = 50
+origin_p_cost = 10
+milk_volume_p_cost = 10
 
 r = []
 m = []
