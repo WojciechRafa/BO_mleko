@@ -157,6 +157,40 @@ def create_conection(l_ele, con_range):
 # conection = create_conection(l_ele, con_range)
 # print(conection)
 
+
+#tworzenie losowych danych
+SR = create_SR(lr, min_r_m, max_r_m) 
+r = []
+r_size = len(SR)
+for i in range(r_size):
+    r.append(d_struct.Node("r", i))
+    r[i].data = SR[i]
+
+
+SM = create_SM(lm, min_m_m, max_m_m, c_range, k_range)
+m = []
+m_size = len(SM)
+for i in range(m_size):
+    m.append(d_struct.Node("m", i))
+    m[i].data = SM[i]
+
+
+b = d_struct.Node("b")
+
+node_list = [b] + r + m
+
+connection = create_conection(l_ele, con_range)
+
+G = d_struct.Neigbour_matrix()
+G.set_node_list(node_list)
+G.set_connection(connection)
+
+start_solution = [
+    [(b, 0), (r[0], 30), (r[1], 50), (m[1], 50), (r[2], 60)],
+    [(b, 0), (r[1], 100), (r[0], 100), (m[1], 160), (m[0], 40)],
+    [(b, 0), (r[0], 30), (r[1], 50), (r[2], 100), (m[0], 180)],
+    [(b, 0), (r[0], 30), (r[2], 50), (m[0], 50), (r[2], 60)],
+    [(b, 0), (r[1], 100), (r[0], 100), (m[1], 160), (m[0], 40)]]
 ################################################################## wersja 2
 
 
