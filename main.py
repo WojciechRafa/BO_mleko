@@ -56,11 +56,7 @@ if __name__ == '__main__':
     result = steps.get_random_steps(R, 5)
     print(result)
 
-    # for step in result:
-    #     changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
-    #     for day in changed_ttable:
-    #         print(day)
-    #     print('\n\n')
+
 
     iter = 0
     TL = []
