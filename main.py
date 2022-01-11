@@ -46,9 +46,13 @@ if __name__ == '__main__':
 
     R = []  # rozwiązanie jest listą 5-ciu list krotek zawierających obiekt typu node i ilość mleka wlaną/wylaną w danym miejscu
     R = data.start_solution #początkowe rozwiązanie losowe
-    max_iter = int(input("Podaj liczbę iteracji: "))
-    n = int(input("Podaj liczbę kroków sprawdzanych w jednej iteracji: "))
-    TL_dl = int(input("Podaj długość listy tabu: "))
+
+    # tymczasowow zakomneotwane
+    #max_iter = int(input("Podaj liczbę iteracji: "))
+    #n = int(input("Podaj liczbę kroków sprawdzanych w jednej iteracji: "))
+    #TL_dl = int(input("Podaj długość listy tabu: "))
+
+
     result = steps.get_random_steps(R, 5)
     print(result)
 
@@ -107,9 +111,6 @@ if __name__ == '__main__':
                     del result_list[max_el_idx]
                     del s_list[max_el_idx]
                     del is_accpet[max_el_idx]
-
-                    max_el = max(score)
-                    max_el_idx = score.index(max_el)
             else:
                 values.append(max_el)
                 TL.append(s_list[max_el_idx])
@@ -117,12 +118,11 @@ if __name__ == '__main__':
                 R = result_list[max_el_idx]
                 break
 
-
-
         #obsługa listy tabu
-        TL.append(made_move)
         if len(TL) >= TL_dl:
             TL.remove(TL[0])
+
+        iter += 1
 
     #wyświetlanie wyników
     nr = 0

@@ -3,6 +3,7 @@ import random
 from typing import List
 from typing import Tuple
 
+
 import data
 import features
 
@@ -37,11 +38,11 @@ class Step:
         self.is_posible: int = False
         self.data = []
 
-   # def __eq__(self, other):
-   #     if self.type == other.type and self.day == other.day and self.node_in_day == other.node_in_day:
-   #         return True
-   #     else:
-   #         return False
+    def __eq__(self, other):
+        if self.type == other.type and self.day == other.day and self.node_in_day == other.node_in_day:
+            return True
+        else:
+            return False
 
     def detail_step(self, timetable: List[List[List]], day_nr: int) -> Tuple[
         bool, int, List]:  # funkcja zwaraca inoframcje o tym czy można wykonać funkcję oraz listę z dodatkowymi informacjami
@@ -60,18 +61,13 @@ class Step:
             max_added_milk = 0
             if car_limit > 0 and farmer_limit > 0:
                 max_added_milk = max(car_limit, farmer_limit)
-            elif car_limit > 0:
-                max_added_milk = car_limit
-            elif farmer_limit > 0:
-                max_added_milk = farmer_limit
             else:
-                max_added_milk = data.pc  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
+                max_added_milk = 0
 
             if max_added_milk > 0:
                 to_return = True, pos, [data.r[r_nr], random.randrange(max_added_milk)]
             else:
                 to_return = False, None, []
-
 
         elif self.type == Step_type.add_M:
             pos = random.randrange(len(day)) + 1
@@ -84,7 +80,7 @@ class Step:
             if car_limit > 0:
                 max_added_milk = car_limit
             else:
-                max_added_milk = data.m[m_nr].data[1]//2  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
+                max_added_milk = 0
 
             if max_added_milk > 0:
                 to_return = True, pos, [data.m[m_nr], random.randrange(max_added_milk)]
@@ -156,12 +152,8 @@ class Step:
                 max_added_milk = 0
                 if car_limit > 0 and farmer_limit > 0:
                     max_added_milk = max(car_limit, farmer_limit)
-                elif car_limit > 0:
-                    max_added_milk = car_limit
-                elif farmer_limit > 0:
-                    max_added_milk = farmer_limit
                 else:
-                    max_added_milk = data.pc  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
+                    max_added_milk = 0   # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
 
                 if max_added_milk > 0:
                     to_return = True, chosed_node, [random.randrange(max_added_milk)]
@@ -207,10 +199,6 @@ class Step:
 
                 if car_limit > 0 and farmer_limit > 0:
                     max_added_milk = max(car_limit, farmer_limit)
-                elif car_limit > 0:
-                    max_added_milk = car_limit
-                elif farmer_limit > 0:
-                    max_added_milk = farmer_limit
                 else:
                     is_added = False
 
@@ -239,14 +227,12 @@ class Step:
                 if car_limit > 0:
                     max_added_milk = car_limit
                 else:
-                    # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
-                    max_added_milk = day[chosed_node][0].data[1]//2
+                    max_added_milk = 0
 
                 if max_added_milk > 0:
                     to_return = True, chosed_node, [random.randrange(max_added_milk)]
                 else:
                     to_return = False, None, []
-
 
         elif self.type == Step_type.decrease_M:
             m_list: List[int] = []
