@@ -559,6 +559,27 @@ def update_time_table(timetable: List[List[List]], step: Step, milk) -> bool:# f
             return True
 
 
+def correct_max_min_day(timetable: List[List[List]], day_nr: int):
+    day: List[List] = timetable[day_nr]
+
+    for node in day:
+        if node[0].name == 'b':
+            if node[1] > data.pc:
+                node[1] = data.pc
+            elif node[1] < -data.pc:
+                node[1] = -data.pc
+
+        if node[0].name == 'm':
+            if node[1] > data.pc:
+                node[1] = data.pc
+
+        if node[0].name == 'b':
+            if node[1] > data.pc:
+                node[1] = data.pc
+
+
+
+
 def make_timetable_copy(timetable: List[List[List]]) -> List[List[List]]:
     result = []
     for day in timetable:
@@ -618,4 +639,5 @@ def make_step(timetable: List[List[List]], step: Step) -> List[List[List]]:
         milk = step.data[0]
         update_time_table(timetable, step, milk*(-1))
 
+    correct_max_min_day(timetable, step.day)
     return timetable

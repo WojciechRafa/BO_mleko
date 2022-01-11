@@ -30,9 +30,11 @@ def check_r_time(solution) -> Tuple[int, bool]:
 
 
 #sprawdza, czy trasa nie jest za długa
-def check_distance(solution: List) -> Tuple[int, bool]:  
+def check_distance(solution: List) -> Tuple[int, int, bool]:
     numbers_of_errors: int = 0
     is_day_dist_ok: bool = True
+
+    volume = 0
     for dzien in solution:
         distance = 0
         lista_krokow = []
@@ -43,11 +45,12 @@ def check_distance(solution: List) -> Tuple[int, bool]:
             distance += data.G.get_lenght(lista_krokow[i], lista_krokow[i+1])
         if distance > data.lk:
             numbers_of_errors += 1
+            volume += distance - data.lk
 
     if numbers_of_errors > 0:
         is_day_dist_ok = False
 
-    return numbers_of_errors, is_day_dist_ok
+    return volume*data.dist_cost, numbers_of_errors, is_day_dist_ok
 
 
 #sprawdza, czy nie przekroczono pojemności cysterny
@@ -69,9 +72,9 @@ def check_milk_volume(solution: List) -> Tuple[int, int, bool]:
 
             if milk_quantity > data.mc or milk_quantity < 0:
                 numbers_of_errors += 1
-                volume = volume + ((milk_quantity-data.mc)*1) 
+                volume = volume + ((milk_quantity-data.mc)*10)
     if numbers_of_errors > 0:
-        return volume ,numbers_of_errors, False
+        return volume, numbers_of_errors, False
     else:
         return volume, numbers_of_errors, True
 
@@ -87,9 +90,9 @@ def mlecz_penalties(solution: List) -> int:
                 if (node.name == 'm') and (node.nr == i):
                     milk_sum += milk
         if milk_sum < data.SM[i][1]:
-            sum_penalty += 1 * (data.SM[i][1]-milk_sum)
+            sum_penalty += 10 * (data.SM[i][1]-milk_sum)
         if milk_sum > data.SM[i][2]:
-            sum_penalty += 1 * (milk_sum - data.SM[i][1])
+            sum_penalty += 10 * (milk_sum - data.SM[i][1])
     return sum_penalty
 
 
@@ -109,6 +112,7 @@ def check_schedule(solution: List) -> Tuple[int, bool]:
         is_shedule_ok = False
     return cost, is_shedule_ok
 
+
 #sprawdzanie, czy nie odbieramy więcej mleka, niż rolnik jest w stanie wyprodukować
 def check_r_milk_volume(solution: List) -> Tuple[int, bool]:
     cost = 0
@@ -117,10 +121,10 @@ def check_r_milk_volume(solution: List) -> Tuple[int, bool]:
     for nr_day, day in enumerate(solution):
         for nr_node, node_milk in enumerate(day):
             node, milk = node_milk
-            if node.name =='r':
+            if node.name == 'r':
                 milk_at_farmer = data.how_much_milk_is_in_point(solution, nr_day, nr_node)
                 if milk > milk_at_farmer:
-                    cost += 500 + ((milk-milk_at_farmer)*1)
-    if cost>0:
+                    cost += 500 + ((milk-milk_at_farmer)*10)
+    if cost > 0:
         is_ok = False                
     return cost, is_ok
