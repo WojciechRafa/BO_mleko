@@ -51,8 +51,9 @@ def check_distance(solution: List) -> Tuple[int, bool]:
 
 
 #sprawdza, czy nie przekroczono pojemności cysterny
-def check_milk_volume(solution: List) -> Tuple[int, bool]:
+def check_milk_volume(solution: List) -> Tuple[int, int, bool]:
     numbers_of_errors: int = 0
+    volume = 0
     for day in solution:
         milk_quantity = 0
         for node_and_milk in day:
@@ -68,10 +69,11 @@ def check_milk_volume(solution: List) -> Tuple[int, bool]:
 
             if milk_quantity > data.mc or milk_quantity < 0:
                 numbers_of_errors += 1
+                volume = volume + ((milk_quantity-data.mc)*1) 
     if numbers_of_errors > 0:
-        return numbers_of_errors, False
+        return volume ,numbers_of_errors, False
     else:
-        return numbers_of_errors, True
+        return volume, numbers_of_errors, True
 
 
 #oblicza kary umowne z mleczarni
@@ -84,24 +86,41 @@ def mlecz_penalties(solution: List) -> int:
                 node, milk = node_and_milk
                 if (node.name == 'm') and (node.nr == i):
                     milk_sum += milk
-        if (milk_sum < data.SM[i][1]) or (milk_sum > data.SM[i][2]):
-            sum_penalty += data.SM[i][4]
+        if milk_sum < data.SM[i][1]:
+            sum_penalty += 1 * (data.SM[i][1]-milk_sum)
+        if milk_sum > data.SM[i][2]:
+            sum_penalty += 1 * (milk_sum - data.SM[i][1])
     return sum_penalty
 
 
 #sprawdza, czy mleko jest dostarczane do mleczarnii zgodnie z harmonogramem
 def check_schedule(solution: List) -> Tuple[int, bool]:
-    numbers_of_errors: int = 0
+    cost: int = 0
     is_shedule_ok: bool = True
     d: int = 0
     for day in solution:
         d += 1
-        milk_quantity = 0
         for node_milk in day:
             node, milk = node_milk
             if node.name =='m':
                 if not d in node.data[0]:
-                    numbers_of_errors += 1
-    if numbers_of_errors > 0:
+                    cost += node.data[4]
+    if cost > 0:
         is_shedule_ok = False
-    return numbers_of_errors, is_shedule_ok
+    return cost, is_shedule_ok
+
+#sprawdzanie, czy nie odbieramy więcej mleka, niż rolnik jest w stanie wyprodukować
+def check_r_milk_volume(solution: List) -> Tuple[int, bool]:
+    cost = 0
+    is_ok = True
+    
+    for nr_day, day in enumerate(solution):
+        for nr_node, node_milk in enumerate(day):
+            node, milk = node_milk
+            if node.name =='r':
+                milk_at_farmer = data.how_much_milk_is_in_point(solution, nr_day, nr_node)
+                if milk > milk_at_farmer:
+                    cost += 500 + ((milk-milk_at_farmer)*1)
+    if cost>0:
+        is_ok = False                
+    return cost, is_ok
