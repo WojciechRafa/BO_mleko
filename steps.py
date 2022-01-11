@@ -387,7 +387,6 @@ def update_timetable_after(timetable: List[List[List]], day_nr: int, node_in_day
                 timetable[day][i][1] -= milk_change
                 break
     else:
-        print("milk_change < 0")
         is_positive = False
         milk_change = abs(milk_change)  # !!! milk change -ile mleka musimy dodatkowo zdobyć
         day = day_nr
@@ -472,7 +471,6 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                         timetable[day][i][1] -= max_removed_milk
                         milk_change -= max_removed_milk
     else:
-        print("milk_change < 0")
         is_positive = False
         milk_change = abs(milk_change)  # !!! milk change -ile mleka musimy dodatkowo zdobyć
         day = day_nr
