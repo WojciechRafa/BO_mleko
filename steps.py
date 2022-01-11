@@ -60,7 +60,12 @@ class Step:
                 max_added_milk = farmer_limit
             else:
                 max_added_milk = data.pc  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
-            to_return = True, pos, [data.r[r_nr], random.randrange(max_added_milk)]
+
+            if max_added_milk > 0:
+                to_return = True, pos, [data.r[r_nr], random.randrange(max_added_milk)]
+            else:
+                to_return = False, None, []
+
 
         elif self.type == Step_type.add_M:
             pos = random.randrange(len(day)) + 1
@@ -75,7 +80,10 @@ class Step:
             else:
                 max_added_milk = data.m[m_nr].data[1]//2  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
 
-            to_return = True, pos, [data.m[m_nr], random.randrange(max_added_milk)]
+            if max_added_milk > 0:
+                to_return = True, pos, [data.m[m_nr], random.randrange(max_added_milk)]
+            else:
+                to_return = False, None, []
 
         elif self.type == Step_type.add_B:
             pos = random.randrange(len(day)) + 1
@@ -149,7 +157,10 @@ class Step:
                 else:
                     max_added_milk = data.pc  # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
 
-                to_return = True, chosed_node, [random.randrange(max_added_milk)]
+                if max_added_milk > 0:
+                    to_return = True, chosed_node, [random.randrange(max_added_milk)]
+                else:
+                    to_return = False, None, []
 
         elif self.type == Step_type.decrease_R:
             r_list: List[int] = []
@@ -162,7 +173,10 @@ class Step:
             else:
                 chosed_node: int = r_list[random.randrange(len(r_list))]
                 max_decrease = timetable[self.day][chosed_node][1]
-                to_return = True, chosed_node, [random.randrange(max_decrease)]
+                if max_decrease > 0:
+                    to_return = True, chosed_node, [random.randrange(max_decrease)]
+                else:
+                    to_return = False, None, []
 
         elif self.type == Step_type.take_max_R:  # w data podawana jest maksymalna wartość jaka może być doładowana (jeżeli ma wartość ujemną to jest ona wyładowywana)
             r_list: List[int] = []
@@ -216,14 +230,17 @@ class Step:
 
                 car_limit: int = milk_on_car - day[chosed_node][1]
 
-                max_added_milk = 0
                 if car_limit > 0:
                     max_added_milk = car_limit
                 else:
                     # jeżeli nie ma możliwości dokonania ruchu tak aby znalazł się on w limitach wykonujemy ruch poza tymi limitami
                     max_added_milk = day[chosed_node][0].data[1]//2
 
-                to_return = True, chosed_node, [random.randrange(max_added_milk)]
+                if max_added_milk > 0:
+                    to_return = True, chosed_node, [random.randrange(max_added_milk)]
+                else:
+                    to_return = False, None, []
+
 
         elif self.type == Step_type.decrease_M:
             m_list: List[int] = []
@@ -236,7 +253,10 @@ class Step:
             else:
                 chosed_node: int = m_list[random.randrange(len(m_list))]
                 max_decrease = timetable[self.day][chosed_node][1]
-                to_return = True, chosed_node, [random.randrange(max_decrease)]
+                if max_decrease > 0:
+                    to_return = True, chosed_node, [random.randrange(max_decrease)]
+                else:
+                    to_return = False, None, []
 
         elif self.type == Step_type.take_max_M:
             m_list: List[int] = []
@@ -288,12 +308,15 @@ class Step:
 
                 car_limit: int = milk_on_car - day[chosed_node][1]
 
-                max_added_milk = 0
                 if car_limit > 0:
                     max_added_milk = car_limit
                 else:
                     max_added_milk = data.pc
-                to_return = True, chosed_node, [random.randrange(max_added_milk)]
+
+                if max_added_milk > 0:
+                    to_return = True, chosed_node, [random.randrange(max_added_milk)]
+                else:
+                    to_return = False, None, []
 
         elif self.type == Step_type.decrease_B:
             b_list: List[int] = []
@@ -310,7 +333,6 @@ class Step:
 
                 limit = milk_on_car + added_milk
 
-                max_decrase_milk = 0
                 if limit > 0:
                     to_return = True, chosed_node, [random.randrange(limit)]
                 else:
@@ -323,7 +345,7 @@ class Step:
         return to_return
 
 
-def get_random_steps(timetable: List[List[Tuple]], n: int, max_fail_nr: int = 20) -> List:
+def get_random_steps(timetable: List[List[List]], n: int, max_fail_nr: int = 20) -> List:
     imposible_move_list = []  # lista ta ma na celu ochronę przed wykonywaniem niemożliwych ruchów, posiada ona w
     move_list = []
     while len(move_list) < n:
@@ -694,7 +716,11 @@ def update_time_table(timetable: List[List[List]], step: Step, milk) -> bool:# f
 def make_timetable_copy(timetable: List[List[List]]) -> List[List[List]]:
     result = []
     for day in timetable:
-        result.append(day[:])
+        new_day = []
+        for node in day:
+            new_node = node[:]
+            new_day.append(new_node)
+        result.append(new_day)
     return result
 
 

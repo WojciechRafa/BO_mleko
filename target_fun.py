@@ -49,7 +49,7 @@ def cooling_cost(solution: List) -> float:
     return sum
 
 # Funkcja celu. Oblicza całkowity zysk/stratę oraz sprawdza, czy rozwiązanie jest dopuszczalne
-def t_fun(solution) ->Tuple[float, bool]:
+def t_fun(solution: [List[List[List]]]) ->Tuple[float, bool]:
     profit = profits_calc(solution)
     d_cost = drive_cost(solution)
     cool_cost = cooling_cost(solution)
