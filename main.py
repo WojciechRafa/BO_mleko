@@ -26,7 +26,7 @@ if __name__ == '__main__':
         changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
         for day in changed_ttable:
             print(day)
-        print('\n')
+        print('\n\n')
 
 iter = 0
 
