@@ -33,42 +33,43 @@ if __name__ == '__main__':
     data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
     R = []  # rozwiązanie jest listą 5-ciu list krotek zawierających obiekt typu node i ilość mleka wlaną/wylaną w danym miejscu
     R = data.start_solution #początkowe rozwiązanie losowe
-    max_iter = input("Podaj liczbę iteracji: ")
-    n = input("Podaj liczbę kroków sprawdzanych w jednej iteracji: ")
-    TL_dl = input("Podaj długość listy tabu: ")
-    # result = steps.get_random_steps(R, 5)
-    # print(result)
+    max_iter = int(input("Podaj liczbę iteracji: "))
+    n = int(input("Podaj liczbę kroków sprawdzanych w jednej iteracji: "))
+    TL_dl = int(input("Podaj długość listy tabu: "))
 
-    # for step in result:
-    #     changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
-    #     for day in changed_ttable:
-    #         print(day)
-    #     print('\n\n')
+    result = steps.get_random_steps(R, 5)
+    print(result)
 
-    # iter = 0
-    # TL = []
-    # made_move = 0
-    # #pierwszy obieg algorytmu 
-    # fun_value, is_legal = target_fun.t_fun(R)
+    for step in result:
+        changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
+        for day in changed_ttable:
+            print(day)
+        print('\n\n')
+
+    iter = 0
+    TL = []
+    made_move = 0
+    #pierwszy obieg algorytmu 
+    fun_value, is_legal = target_fun.t_fun(R)
 
 
-    # while iter < max_iter:
-    #     #generowanie nowych rozwiązań i wybór najlepszego
-    #     steps_list = steps.get_random_steps(R, n)
-    #     for step in steps_list:
-    #         if step not in TL:
-    #             changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
-    #             new_fun_value, is_legal = target_fun.t_fun(changed_ttable)
-    #             if new_fun_value >= fun_value:
-    #                 R = changed_ttable
-    #                 fun_value = new_fun_value
-    #                 made_move = step
-    #     values.append(fun_value) 
+    while iter < max_iter:
+        #generowanie nowych rozwiązań i wybór najlepszego
+        steps_list = steps.get_random_steps(R, n)
+        for step in steps_list:
+            if step not in TL:
+                changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
+                new_fun_value, is_legal = target_fun.t_fun(changed_ttable)
+                if new_fun_value >= fun_value:
+                    R = changed_ttable
+                    fun_value = new_fun_value
+                    made_move = step
+        values.append(fun_value) 
     
-    #     #obsługa listy tabu
-    #     TL.append(made_move)
-    #     if len(TL) >= TL_dl:
-    #         TL.remove(TL[0])
+        #obsługa listy tabu
+        TL.append(made_move)
+        if len(TL) >= TL_dl:
+            TL.remove(TL[0])
 
 
     #wizualizacja wyników
