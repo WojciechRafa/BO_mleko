@@ -30,14 +30,19 @@ con_range = (1, 10) #zakres połączeń między wierzchołkami
 
 
 if __name__ == '__main__':
-    data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
+    SM, SR, connection, start_solution = data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
+    data.SM = SM
+    data.SR = SR
+    data.connection = connection
+    data.start_solution = start_solution
+
     R = []  # rozwiązanie jest listą 5-ciu list krotek zawierających obiekt typu node i ilość mleka wlaną/wylaną w danym miejscu
     R = data.start_solution #początkowe rozwiązanie losowe
     max_iter = input("Podaj liczbę iteracji: ")
     n = input("Podaj liczbę kroków sprawdzanych w jednej iteracji: ")
     TL_dl = input("Podaj długość listy tabu: ")
-    # result = steps.get_random_steps(R, 5)
-    # print(result)
+    result = steps.get_random_steps(R, 5)
+    print(result)
 
     # for step in result:
     #     changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
@@ -45,30 +50,30 @@ if __name__ == '__main__':
     #         print(day)
     #     print('\n\n')
 
-    # iter = 0
-    # TL = []
-    # made_move = 0
-    # #pierwszy obieg algorytmu 
-    # fun_value, is_legal = target_fun.t_fun(R)
+    iter = 0
+    TL = []
+    made_move = 0
+    #pierwszy obieg algorytmu
+    fun_value, is_legal = target_fun.t_fun(R)
 
 
-    # while iter < max_iter:
-    #     #generowanie nowych rozwiązań i wybór najlepszego
-    #     steps_list = steps.get_random_steps(R, n)
-    #     for step in steps_list:
-    #         if step not in TL:
-    #             changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
-    #             new_fun_value, is_legal = target_fun.t_fun(changed_ttable)
-    #             if new_fun_value >= fun_value:
-    #                 R = changed_ttable
-    #                 fun_value = new_fun_value
-    #                 made_move = step
-    #     values.append(fun_value) 
-    
-    #     #obsługa listy tabu
-    #     TL.append(made_move)
-    #     if len(TL) >= TL_dl:
-    #         TL.remove(TL[0])
+    while iter < max_iter:
+        #generowanie nowych rozwiązań i wybór najlepszego
+        steps_list = steps.get_random_steps(R, n)
+        for step in steps_list:
+            if step not in TL:
+                changed_ttable = steps.make_step(steps.make_timetable_copy(R), step)
+                new_fun_value, is_legal = target_fun.t_fun(changed_ttable)
+                if new_fun_value >= fun_value:
+                    R = changed_ttable
+                    fun_value = new_fun_value
+                    made_move = step
+        values.append(fun_value)
+
+        #obsługa listy tabu
+        TL.append(made_move)
+        if len(TL) >= TL_dl:
+            TL.remove(TL[0])
 
 
     #wizualizacja wyników
