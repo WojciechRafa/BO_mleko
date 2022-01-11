@@ -30,17 +30,24 @@ con_range = (1, 10) #zakres połączeń między wierzchołkami
 
 
 if __name__ == '__main__':
-    SM, SR, connection, start_solution = data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
+    SM, SR, connection, start_solution, r, m, b, node_list, G = data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
     data.SM = SM
     data.SR = SR
     data.connection = connection
     data.start_solution = start_solution
+    data.r = r
+    data.m = m
+    data.b = b
+    data.node_list = node_list
+    data.G = G
+
+
 
     R = []  # rozwiązanie jest listą 5-ciu list krotek zawierających obiekt typu node i ilość mleka wlaną/wylaną w danym miejscu
     R = data.start_solution #początkowe rozwiązanie losowe
-    max_iter = input("Podaj liczbę iteracji: ")
-    n = input("Podaj liczbę kroków sprawdzanych w jednej iteracji: ")
-    TL_dl = input("Podaj długość listy tabu: ")
+    max_iter = int(input("Podaj liczbę iteracji: "))
+    n = int(input("Podaj liczbę kroków sprawdzanych w jednej iteracji: "))
+    TL_dl = int(input("Podaj długość listy tabu: "))
     result = steps.get_random_steps(R, 5)
     print(result)
 

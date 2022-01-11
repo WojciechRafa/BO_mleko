@@ -216,7 +216,7 @@ def create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_
     print('\r')
     print("Macierz sąsiedztwa:")
     print(connection)
-    return SM, SR, connection, start_solution
+    return SM, SR, connection, start_solution, r, m, b, node_list, G
 ################################################################## wersja 2
 
 
