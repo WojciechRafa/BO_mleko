@@ -56,14 +56,15 @@ def t_fun(solution: [List[List[List]]]) ->Tuple[float, bool]:
 
     old_milk_pen, old_milk_bool = limits.check_r_time(solution)
     dist_pen, dist_bool = limits.check_distance(solution)
-    volume_pen, volume_bool = limits.check_milk_volume(solution)
+    cost, volume_pen, volume_bool = limits.check_milk_volume(solution)
     mlecz_pen = limits.mlecz_penalties(solution)
+    cost_errors_schedule, is_shedule_ok = limits.check_schedule(solution)
+    cost_r_milk_volume, is_ok_r_milk_volume = limits.check_r_milk_volume(solution)
 
-    pen_sum = old_milk_pen*data.old_milk_error_cost+dist_pen*data.dist_error_cost+volume_pen*data.volume_error_cost+mlecz_pen
-    is_legal = old_milk_bool is True and dist_bool is True and volume_bool is True
+    pen_sum = old_milk_pen*data.old_milk_error_cost+dist_pen*data.dist_error_cost+volume_pen*data.volume_error_cost+mlecz_pen+cost_errors_schedule+cost_r_milk_volume
+    is_legal = old_milk_bool is True and dist_bool is True and volume_bool is True and is_shedule_ok is True and is_ok_r_milk_volume is True
 
-    fun_value = profit - d_cost - cool_cost - pen_sum
-
+    fun_value = profit - d_cost - cool_cost - pen_sum - cost
     return fun_value, is_legal
 
 

@@ -123,7 +123,7 @@ if __name__ == '__main__':
         TL.append(made_move)
         if len(TL) >= TL_dl:
             TL.remove(TL[0])
-
+            iter += 1
     #wyświetlanie wyników
     nr = 0
     for day in R:
@@ -134,9 +134,9 @@ if __name__ == '__main__':
         print('\r')
     print('Zysk:',fun_value)
     #wizualizacja przebiegu algorytmu
-    # plt.plot(values)
-    # plt.xlabel('iteracja')
-    # plt.ylabel('wartość')
-    # plt.show()
+    plt.plot(values)
+    plt.xlabel('iteracja')
+    plt.ylabel('wartość')
+    plt.show()
 
 
