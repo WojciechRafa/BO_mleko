@@ -81,6 +81,7 @@ lr = 5 # liczba rolników
 min_r_m = 20 # minimalna dzienna liczba produkowanych litrów mleka w gospodarstwie
 max_r_m = 200 # maksymalna dzienna liczba produkowanych litrów mleka w gospodarstwie
 
+
 def create_SR(lr, min_r_m, max_r_m):
     tab = []
     for i in range(lr):
@@ -134,7 +135,8 @@ def create_SM(lm, min_m_m, max_m_m, c_range, k_range):
 
 #tworzenie connection
 l_ele = lr + lm + 1 #liczba węzłów grafu
-con_range = (1,10) #zakres połączeń między wierzchołkami
+con_range = (1, 10) #zakres połączeń między wierzchołkami
+
 
 def create_conection(l_ele, con_range):
     #tworzenie macierzy
@@ -186,11 +188,11 @@ G.set_node_list(node_list)
 G.set_connection(connection)
 
 start_solution = [
-    [(b, 0), (r[0], 30), (r[1], 50), (m[1], 50), (r[2], 60)],
-    [(b, 0), (r[1], 100), (r[0], 100), (m[1], 160), (m[0], 40)],
-    [(b, 0), (r[0], 30), (r[1], 50), (r[2], 100), (m[0], 180)],
-    [(b, 0), (r[0], 30), (r[2], 50), (m[0], 50), (r[2], 60)],
-    [(b, 0), (r[1], 100), (r[0], 100), (m[1], 160), (m[0], 40)]]
+    [[b, 0], [r[0], 30],  [r[1], 50 ] ,[m[1], 50 ],  [r[2], 60 ]],
+    [[b, 0], [r[1], 100], [r[0], 100], [m[1], 160],  [m[0], 40 ]],
+    [[b, 0], [r[0], 30],  [r[1], 50 ], [r[2], 100],  [m[0], 180]],
+    [[b, 0], [r[0], 30],  [r[2], 50 ], [m[0], 50 ],  [r[2], 60 ]],
+    [[b, 0], [r[1], 100], [r[0], 100], [m[1], 160],  [m[0], 40 ]]]
 ################################################################## wersja 2
 
 
