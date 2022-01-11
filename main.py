@@ -118,7 +118,8 @@ if __name__ == '__main__':
         #obsługa listy tabu
         if len(TL) >= TL_dl:
             TL.remove(TL[0])
-            iter += 1
+
+        iter += 1
     #wyświetlanie wyników
     nr = 0
     for day in R:
@@ -127,7 +128,11 @@ if __name__ == '__main__':
         for w in day:
             print(w[0].name,w[0].nr,'->',w[1])
         print('\r')
+<<<<<<< HEAD
     print('Zysk:',max(values))
+=======
+    print('Zysk:', max(values))
+>>>>>>> d76d179ba872c0b6d91f6075dea4e3e0b3d5b576
     #wizualizacja przebiegu algorytmu
     plt.plot(values)
     plt.xlabel('iteracja')

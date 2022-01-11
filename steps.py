@@ -303,7 +303,7 @@ class Step:
                 if car_limit > 0:
                     max_added_milk = car_limit
                 else:
-                    max_added_milk = data.pc
+                    max_added_milk = 0
 
                 if max_added_milk > 0:
                     to_return = True, chosed_node, [random.randrange(max_added_milk)]
@@ -323,7 +323,12 @@ class Step:
                 milk_on_car: int = features.sum_milk(day[:chosed_node])
                 added_milk = timetable[self.day][chosed_node][1]
 
-                limit = milk_on_car + added_milk
+                if self.node_in_day == 0 and timetable[day][i] > 0:
+                    limit = added_milk
+                elif self.node_in_day != 0:
+                    limit = milk_on_car + added_milk
+                else:
+                    limit = 0
 
                 if limit > 0:
                     to_return = True, chosed_node, [random.randrange(limit)]
@@ -462,14 +467,15 @@ def update_timetable_before(timetable: List[List[List]], day_nr: int, node_in_da
                         timetable[day][i][1] -= max_removed_milk
                         milk_change -= max_removed_milk
                 else:
-                    max_removed_milk = timetable[day][i]
-                    if max_removed_milk > milk_change:
-                        timetable[day][i][1] -= milk_change
-                        milk_change = 0
-                        break
-                    else:
-                        timetable[day][i][1] -= max_removed_milk
-                        milk_change -= max_removed_milk
+                    if timetable[day][i] > 0:
+                        max_removed_milk = timetable[day][i]
+                        if max_removed_milk > milk_change:
+                            timetable[day][i][1] -= milk_change
+                            milk_change = 0
+                            break
+                        else:
+                            timetable[day][i][1] = 0
+                            milk_change -= max_removed_milk
     else:
         is_positive = False
         milk_change = abs(milk_change)  # !!! milk change -ile mleka musimy dodatkowo zdobyć
