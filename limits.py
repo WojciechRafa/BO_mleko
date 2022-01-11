@@ -89,7 +89,7 @@ def mlecz_penalties(solution: List) -> int:
         if milk_sum < data.SM[i][1]:
             sum_penalty += 1 * (data.SM[i][1]-milk_sum)
         if milk_sum > data.SM[i][2]:
-            sum_penalty += 1 * (milk_sum - data.SM[i][1])
+            sum_penalty += 1000 * (milk_sum - data.SM[i][1])
     return sum_penalty
 
 
@@ -113,7 +113,7 @@ def check_schedule(solution: List) -> Tuple[int, bool]:
 def check_r_milk_volume(solution: List) -> Tuple[int, bool]:
     cost = 0
     is_ok = True
-    
+
     for nr_day, day in enumerate(solution):
         for nr_node, node_milk in enumerate(day):
             node, milk = node_milk

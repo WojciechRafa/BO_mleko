@@ -48,9 +48,9 @@ if __name__ == '__main__':
     R = data.start_solution #początkowe rozwiązanie losowe
 
     # tymczasowow zakomneotwane
-    #max_iter = int(input("Podaj liczbę iteracji: "))
-    #n = int(input("Podaj liczbę kroków sprawdzanych w jednej iteracji: "))
-    #TL_dl = int(input("Podaj długość listy tabu: "))
+    max_iter = int(input("Podaj liczbę iteracji: "))
+    n = int(input("Podaj liczbę kroków sprawdzanych w jednej iteracji: "))
+    TL_dl = int(input("Podaj długość listy tabu: "))
 
 
     result = steps.get_random_steps(R, 5)
