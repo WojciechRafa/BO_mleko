@@ -16,7 +16,9 @@ old_milk_error_cost = 2000
 dist_error_cost = 2000
 volume_error_cost = 2000
 
-
+r = []
+m = []
+b = None
 
 ################################################################## wersja 1
 
