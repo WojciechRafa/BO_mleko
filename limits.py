@@ -72,11 +72,11 @@ def check_milk_volume(solution: List) -> Tuple[int, int, bool]:
 
             if milk_quantity > data.mc or milk_quantity < 0:
                 numbers_of_errors += 1
-                volume = volume + ((milk_quantity-data.mc)*10)
+                volume += ((milk_quantity-data.pc)*data.milk_volume_p_cost)
     if numbers_of_errors > 0:
         return volume, numbers_of_errors, False
     else:
-        return volume, numbers_of_errors, True
+        return volume, 0, True
 
 
 #oblicza kary umowne z mleczarni
@@ -128,6 +128,7 @@ def check_r_milk_volume(solution: List) -> Tuple[int, bool]:
     if cost > 0:
         is_ok = False                
     return cost, is_ok
+
 
 def check_milk_orgin(solution: List[List[List]]) -> Tuple[int, bool]:# sprawdzenie tego czy przepływ mleka ma sens
     penalty = 0
