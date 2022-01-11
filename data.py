@@ -12,12 +12,16 @@ cs = 0.2  # cena schłodzenia jednego litra mleka
 mc = 0  # liczba litrów w cysternie
 max_d = 3  # maksymalna liczba dni przez któe mleko może być u rolnika
 
-old_milk_error_cost = 2000
-dist_error_cost = 2000
-volume_error_cost = 2000
+old_milk_error_cost = 200
+dist_error_cost = 600
+volume_error_cost = 200
+orgin_stat_error = 100
+milk_volume_stat_cost = 100
 
 # kary proporcjonalne
 dist_cost = 50
+origin_p_cost = 10
+milk_volume_p_cost = 10
 
 r = []
 m = []
