@@ -124,16 +124,26 @@ if __name__ == '__main__':
     best_solution = []
     max_value = max(values)
     acceptable = False  
+    temp_max_value = float('inf')*-1
 
     for id, ele in enumerate(is_acceptable):
         if ele == True:
             if values[id] == max_value:
                 best_solution = all_solutions[id]
                 acceptable = True
+                break
+            elif values[id] > temp_max_value:
+                temp_max_value = values[id]
+
+    if best_solution == [] and True in is_acceptable:
+        best_solution = all_solutions[values.index(temp_max_value)]
+        max_value = temp_max_value
+        acceptable = True
     
-    if best_solution == []:
+    elif best_solution == [] and not True in is_acceptable:
         best_solution = all_solutions[values.index(max_value)]
         acceptable = False
+        print("Brak dopuszczalnych rozwiązań")
     # wyświetlanie wyników
     nr = 0
     for day in best_solution:
