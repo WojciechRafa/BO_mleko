@@ -64,8 +64,8 @@ if __name__ == '__main__':
     #pierwszy obieg algorytmu
     fun_value, is_legal = target_fun.t_fun(R)
 
-    the_best_result = float('inf')
-
+    the_best_result = 0
+    all_solutions = []
     while iter < max_iter:
         #generowanie nowych rozwiązań i wybór najlepszego
         steps_list = steps.get_random_steps(R, n)
@@ -113,26 +113,41 @@ if __name__ == '__main__':
                 is_acceptable.append(is_accpet[max_el_idx])
                 R = result_list[max_el_idx]
                 break
-        if 
-
+         
+        all_solutions.append(R)
         #obsługa listy tabu
         if len(TL) >= TL_dl:
             TL.remove(TL[0])
 
         iter += 1
-    #wyświetlanie wyników
+
+    best_solution = []
+    max_value = max(values)
+    acceptable = False  
+
+    for id, ele in enumerate(is_acceptable):
+        if ele == True:
+            if values[id] == max_value:
+                best_solution = all_solutions[id]
+                acceptable = True
+    
+    if best_solution == []:
+        best_solution = all_solutions[values.index(max_value)]
+        acceptable = False
+    # wyświetlanie wyników
     nr = 0
-    for day in R:
+    for day in best_solution:
         nr += 1
         print('Dzień',nr)
         for w in day:
             print(w[0].name,w[0].nr,'->',w[1])
         print('\r')
-<<<<<<< HEAD
-    print('Zysk:',max(values))
-=======
-    print('Zysk:', max(values))
->>>>>>> d76d179ba872c0b6d91f6075dea4e3e0b3d5b576
+    print('Zysk:',max_value)
+    if acceptable == True:
+        print("Wynik jest dopuszczalny")
+    else:
+        print("Wynik jest niedopuszczalny")
+
     #wizualizacja przebiegu algorytmu
     plt.plot(values)
     plt.xlabel('iteracja')
