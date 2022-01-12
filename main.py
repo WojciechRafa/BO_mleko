@@ -171,6 +171,7 @@ def start_alg(iter, max_step, tabu_l, iterator):
     plt.ylabel('wartość')
     #plt.show()
     plt.savefig('Fig{}.png'.format(iterator))
+    plt.clf()
 
 
 if __name__ == '__main__':
