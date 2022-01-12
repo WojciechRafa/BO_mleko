@@ -47,14 +47,16 @@ if __name__ == '__main__':
     R = []  # rozwiązanie jest listą 5-ciu list krotek zawierających obiekt typu node i ilość mleka wlaną/wylaną w danym miejscu
     R = data.start_solution #początkowe rozwiązanie losowe
 
+    print('\r')
+    
     # tymczasowow zakomneotwane
     max_iter = int(input("Podaj liczbę iteracji: "))
     n = int(input("Podaj liczbę kroków sprawdzanych w jednej iteracji: "))
     TL_dl = int(input("Podaj długość listy tabu: "))
+    print('\r')
 
 
     result = steps.get_random_steps(R, 5)
-    print(result)
 
 
 
@@ -144,6 +146,9 @@ if __name__ == '__main__':
         best_solution = all_solutions[values.index(max_value)]
         acceptable = False
         print("Brak dopuszczalnych rozwiązań")
+    
+    print('\r')
+    print("Najlepsze otrzymane rozwiązanie:")
     # wyświetlanie wyników
     nr = 0
     for day in best_solution:
