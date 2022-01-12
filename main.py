@@ -12,9 +12,7 @@ import limits
 max_iter = 50 #maksymalna ilość iteracji
 n = 5 #liczba sprawdzanych kroków w jednej iteracji
 TL_dl = 3 #długość listy tabu
-#pomocnicze listy do badania przebiegu algorytmu
-values = [] #lista przechowująca kolejne wartości funkcji celu
-is_acceptable = []#lista przechowująca kolejne informacje o wykonywalniści funkcji
+
 
 lr = 5 # liczba rolników
 min_r_m = 20 # minimalna dzienna liczba produkowanych litrów mleka w gospodarstwie
@@ -30,44 +28,32 @@ l_ele = lr + lm + 1 #liczba węzłów grafu
 con_range = (1, 10) #zakres połączeń między wierzchołkami
 
 
-if __name__ == '__main__':
-    SM, SR, connection, start_solution, r, m, b, node_list, G = data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
-    data.SM = SM
-    data.SR = SR
-    data.connection = connection
-    data.start_solution = start_solution
-    data.r = r
-    data.m = m
-    data.b = b
-    data.node_list = node_list
-    data.G = G
-
-
+def start_alg():
+    # pomocnicze listy do badania przebiegu algorytmu
+    values = []  # lista przechowująca kolejne wartości funkcji celu
+    is_acceptable = []  # lista przechowująca kolejne informacje o wykonywalniści funkcji
 
     R = []  # rozwiązanie jest listą 5-ciu list krotek zawierających obiekt typu node i ilość mleka wlaną/wylaną w danym miejscu
-    R = data.start_solution #początkowe rozwiązanie losowe
+    R = data.start_solution  # początkowe rozwiązanie losowe
 
     # tymczasowow zakomneotwane
     max_iter = int(input("Podaj liczbę iteracji: "))
     n = int(input("Podaj liczbę kroków sprawdzanych w jednej iteracji: "))
     TL_dl = int(input("Podaj długość listy tabu: "))
 
-
     result = steps.get_random_steps(R, 5)
     print(result)
-
-
 
     iter = 0
     TL = []
     made_move = 0
-    #pierwszy obieg algorytmu
+    # pierwszy obieg algorytmu
     fun_value, is_legal = target_fun.t_fun(R)
 
     the_best_result = 0
     all_solutions = []
     while iter < max_iter:
-        #generowanie nowych rozwiązań i wybór najlepszego
+        # generowanie nowych rozwiązań i wybór najlepszego
         steps_list = steps.get_random_steps(R, n)
 
         score = []
@@ -113,9 +99,9 @@ if __name__ == '__main__':
                 is_acceptable.append(is_accpet[max_el_idx])
                 R = result_list[max_el_idx]
                 break
-         
+
         all_solutions.append(R)
-        #obsługa listy tabu
+        # obsługa listy tabu
         if len(TL) >= TL_dl:
             TL.remove(TL[0])
 
@@ -123,8 +109,8 @@ if __name__ == '__main__':
 
     best_solution = []
     max_value = max(values)
-    acceptable = False  
-    temp_max_value = float('inf')*-1
+    acceptable = False
+    temp_max_value = float('inf') * -1
 
     for id, ele in enumerate(is_acceptable):
         if ele == True:
@@ -139,7 +125,7 @@ if __name__ == '__main__':
         best_solution = all_solutions[values.index(temp_max_value)]
         max_value = temp_max_value
         acceptable = True
-    
+
     elif best_solution == [] and not True in is_acceptable:
         best_solution = all_solutions[values.index(max_value)]
         acceptable = False
@@ -148,20 +134,40 @@ if __name__ == '__main__':
     nr = 0
     for day in best_solution:
         nr += 1
-        print('Dzień',nr)
+        print('Dzień', nr)
         for w in day:
-            print(w[0].name,w[0].nr,'->',w[1])
+            print(w[0].name, w[0].nr, '->', w[1])
         print('\r')
-    print('Zysk:',max_value)
+    print('Zysk:', max_value)
     if acceptable == True:
         print("Wynik jest dopuszczalny")
     else:
         print("Wynik jest niedopuszczalny")
 
-    #wizualizacja przebiegu algorytmu
+    # wizualizacja przebiegu algorytmu
     plt.plot(values)
     plt.xlabel('iteracja')
     plt.ylabel('wartość')
     plt.show()
+
+
+if __name__ == '__main__':
+    SM, SR, connection, start_solution, r, m, b, node_list, G = data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
+    data.SM = SM
+    data.SR = SR
+    data.connection = connection
+    data.start_solution = start_solution
+    data.r = r
+    data.m = m
+    data.b = b
+    data.node_list = node_list
+    data.G = G
+
+    while True:
+        in_str = input("Rozpocząć algorytm [T] - Tak: ")
+        if in_str == 't' or in_str == 'T':
+            start_alg()
+
+
 
 

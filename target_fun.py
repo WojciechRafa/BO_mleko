@@ -60,13 +60,13 @@ def t_fun(solution: [List[List[List]]]) ->Tuple[float, bool]:
     mlecz_pen = limits.mlecz_penalties(solution)
     cost_errors_schedule, is_shedule_ok = limits.check_schedule(solution)
     cost_r_milk_volume, is_ok_r_milk_volume = limits.check_r_milk_volume(solution)
-    cost_origin, is_ok_origin = limits.check_milk_orgin(solution)
+    #cost_origin, is_ok_origin = limits.check_milk_orgin(solution)
 
 
-    pen_sum = old_milk_pen*data.old_milk_error_cost+dist_pen*data.dist_error_cost+volume_pen*data.volume_error_cost+mlecz_pen+cost_errors_schedule+cost_r_milk_volume
-    is_legal = old_milk_bool and dist_bool and volume_bool and is_shedule_ok and is_ok_r_milk_volume and is_ok_origin
+    pen_sum = old_milk_pen*data.old_milk_error_cost+dist_pen*data.dist_error_cost+volume_pen*data.volume_error_cost+mlecz_pen+cost_errors_schedule#+cost_r_milk_volume
+    is_legal = old_milk_bool and dist_bool and volume_bool and is_shedule_ok and is_ok_r_milk_volume #and is_ok_origin
 
-    fun_value = profit - d_cost - cool_cost - pen_sum - milk_volume_cost - dist_cost - cost_origin
+    fun_value = profit - d_cost - cool_cost - pen_sum - milk_volume_cost - dist_cost #- cost_origin
     return fun_value, is_legal
 
 
