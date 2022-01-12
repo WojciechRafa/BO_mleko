@@ -569,14 +569,17 @@ def correct_max_min_day(timetable: List[List[List]], day_nr: int):
             elif node[1] < -data.pc:
                 node[1] = -data.pc
 
-        if node[0].name == 'm':
+        elif node[0].name == 'm':
             if node[1] > data.pc:
                 node[1] = data.pc
+            elif node[1] < 0:
+                node = 0
 
-        if node[0].name == 'b':
+        elif node[0].name == 'r':
             if node[1] > data.pc:
                 node[1] = data.pc
-
+            elif node[1] < 0:
+                node[1] = 0
 
 
 

@@ -25,7 +25,8 @@ def check_r_time(solution) -> Tuple[int, bool]:
                 sum_milk = 0
     if numbers_of_errors > 0:
         is_check_r_time_ok = False
-
+    elif numbers_of_errors <0:
+        print("Blad")
     return numbers_of_errors, is_check_r_time_ok > 0
 
 
@@ -49,6 +50,8 @@ def check_distance(solution: List) -> Tuple[int, int, bool]:
 
     if numbers_of_errors > 0:
         is_day_dist_ok = False
+    elif numbers_of_errors < 0:
+        print("Blad")
 
     return volume*data.dist_cost, numbers_of_errors, is_day_dist_ok
 
@@ -72,7 +75,11 @@ def check_milk_volume(solution: List) -> Tuple[int, int, bool]:
 
             if milk_quantity > data.mc or milk_quantity < 0:
                 numbers_of_errors += 1
-                volume += ((milk_quantity-data.pc)*data.milk_volume_p_cost)
+                volume += (abs(milk_quantity-data.pc)*data.milk_volume_p_cost)
+    if numbers_of_errors < 0:
+        print("blad")
+    if volume < 0:
+        print("blad")
     if numbers_of_errors > 0:
         return volume, numbers_of_errors, False
     else:
@@ -93,6 +100,9 @@ def mlecz_penalties(solution: List) -> int:
             sum_penalty += 10 * (data.SM[i][1]-milk_sum)
         if milk_sum > data.SM[i][2]:
             sum_penalty += 10 * (milk_sum - data.SM[i][1])
+
+    if sum_penalty < 0:
+        print("blad")
     return sum_penalty
 
 
@@ -110,6 +120,9 @@ def check_schedule(solution: List) -> Tuple[int, bool]:
                     cost += node.data[4]
     if cost > 0:
         is_shedule_ok = False
+
+    if cost < 0:
+        print("blad")
     return cost, is_shedule_ok
 
 
@@ -143,4 +156,6 @@ def check_milk_orgin(solution: List[List[List]]) -> Tuple[int, bool]:# sprawdzen
             if milk_in_day < 0:
                 is_ok = False
                 penalty += data.orgin_stat_error + abs(milk_in_day)*data.origin_p_cost
+    if penalty < 0:
+        print("eooeo")
     return penalty, is_ok

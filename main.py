@@ -157,16 +157,56 @@ def start_alg():
 
 
 if __name__ == '__main__':
-    SM, SR, connection, start_solution, r, m, b, node_list, G = data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
-    data.SM = SM
-    data.SR = SR
-    data.connection = connection
-    data.start_solution = start_solution
+    #SM, SR, connection, start_solution, r, m, b, node_list, G = data.create_data(lr, min_r_m, max_r_m, lm, min_m_m, max_m_m, c_range, k_range, l_ele, con_range)
+
+    data.SM = [
+             # [(dni odbioru) 0 ,min 1, max 2, cena 3, kara umowan 4]
+             [[3, 4], 139, 582, 4, 440],
+             [[2, 2, 1], 130, 665, 3, 191],
+             [[5], 167, 615, 4, 412]
+         ]
+
+    data.SR = [[25], [72], [97], [27], [126]]
+    data.connection = [[0, 5, 5, 9, 4, 3, 2, 5, 4],
+                       [5, 0, 7, 5, 5, 4, 3, 3, 6],
+                       [5, 7, 0, 6, 5, 4, 3, 8, 7],
+                       [9, 5, 6, 0, 9, 3, 7, 3, 5],
+                       [4, 5, 5, 9, 0, 6, 3, 9, 5],
+                       [3, 4, 4, 3, 6, 0, 4, 1, 3],
+                       [2, 3, 3, 7, 3, 4, 0, 2, 6],
+                       [5, 3, 8, 3, 9, 1, 2, 0, 1],
+                       [4, 6, 7, 5, 5, 3, 6, 1, 0]]
+
+
+    r = []
+    r_size = len(data.SR)
+    for i in range(r_size):
+        r.append(d_struct.Node("r", i))
+        r[i].data = data.SR[i]
+
+
+    m = []
+    m_size = len(data.SM)
+    for i in range(m_size):
+        m.append(d_struct.Node("m", i))
+        m[i].data = data.SM[i]
     data.r = r
     data.m = m
+
+    b = d_struct.Node("b")
     data.b = b
+    node_list = [b] + r + m
     data.node_list = node_list
+    G = d_struct.Neigbour_matrix()
+    G.set_node_list(node_list)
+    G.set_connection(data.connection)
     data.G = G
+
+    data.start_solution =  [[[b, 0], [r[0], 30 ], [r[1], 50 ],  [m[1], 50 ],  [r[2], 60 ]],
+                            [[b, 0], [r[1], 100], [r[0], 100],  [m[1], 160],  [m[0], 40 ]],
+                            [[b, 0], [r[0], 30 ], [r[1], 50 ],  [r[2], 100],  [m[0], 180]],
+                            [[b, 0], [r[0], 30 ], [r[2], 50 ],  [m[0], 50 ],  [r[2], 60 ]],
+                            [[b, 0], [r[1], 100], [r[0], 100],  [m[1], 160],  [m[0], 40 ]]]
 
     while True:
         in_str = input("Rozpocząć algorytm [T] - Tak: ")
